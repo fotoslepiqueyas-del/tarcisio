@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-// Imports absolutos a partir de src/ garantidos pelo alias ou caminho relativo correto
+// Ajuste o nome abaixo exatamente para o nome do arquivo de áudio que está na sua pasta src/
 import backgroundMusic from './enya.mp3';
 import capaCorte from './assets/corte.png';
 import capaTrono from './assets/trono.png';
@@ -390,21 +390,6 @@ function QuizSection({ question, questionIndex, total, selected, onSelect, onNex
     </main>
   );
 }
-const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  function startQuiz() {
-    if (audioRef.current) {
-      audioRef.current.volume = 0.4;
-      audioRef.current.play().catch(err => {
-        console.warn("Reprodução automática impedida pelo navegador:", err);
-      });
-    }
-
-    setScreen('quiz');
-    setQuestionIndex(0);
-    setAnswers([]);
-    setSelected(null);
-  }
 
 function ResultSection({ result, onReset }: any) {
   return (
@@ -427,12 +412,6 @@ function ResultSection({ result, onReset }: any) {
             ✦ Obra Recomendada ✦
           </p>
           <div style={{ position: 'relative', padding: '6px', background: 'rgba(212, 175, 55, 0.1)', border: '1px solid #D4AF37', boxShadow: '0 8px 25px rgba(0,0,0,0.6)' }}>
-           <audio 
-               ref={audioRef} 
-               src="/enya.mp3" 
-               loop 
-               preload="auto"
-           />
             <img 
               src={result.bookCover} 
               alt={result.bookSuggestion} 
@@ -508,7 +487,7 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#0c090a' }}>
-      {/* Elemento de áudio com loop ativado nativamente e import asset do Vite */}
+      {/* Player de áudio centralizado na raiz do App com loop nativo */}
       <audio 
         ref={audioRef} 
         src={backgroundMusic} 
