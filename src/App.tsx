@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-// Ajuste o nome abaixo exatamente para o nome do arquivo de áudio que está na sua pasta src/
+// Imports das capas de livros armazenadas em src/assets/
 import capaCorte from './assets/corte.png';
 import capaTrono from './assets/trono.png';
 import capaPriorado from './assets/priorado.png';
@@ -132,7 +132,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     bookSuggestion: 'Coração Lascivo',
     bookSynopsis: 'Uma narrativa visceral e de escolhas morais cinzentas, onde segredos profundos, paixões proibidas e sombras implacáveis moldam o destino de personagens impiedosos.',
     bookCover: capaCoracao,
-    authors: 'Keri Lake · Jennifer L. Armentrout',
+    authors: 'Jennifer L. Armentrout · Anne Rice',
   },
   urban: {
     title: 'Fantasia Urbana',
@@ -449,6 +449,7 @@ export default function App() {
 
   function startQuiz() {
     if (audioRef.current) {
+      audioRef.current.currentTime = 0;
       audioRef.current.volume = 0.4;
       audioRef.current.play().catch(err => {
         console.warn("Reprodução automática impedida pelo navegador:", err);
@@ -486,10 +487,10 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#0c090a' }}>
-      {/* Player de áudio centralizado na raiz do App com loop nativo */}
+      {/* Player de áudio vinculado diretamente à pasta public */}
       <audio 
         ref={audioRef} 
-        src="/enya.mp3"
+        src="/enya.mp3" 
         loop 
         preload="auto"
       />
