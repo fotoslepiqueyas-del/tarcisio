@@ -1,7 +1,13 @@
 import React, { useState, useRef } from 'react';
 
-// Apenas a música fica importada do src/assets (que sabemos que está lá)
+// Imports absolutos a partir de src/ garantidos pelo alias ou caminho relativo correto
 import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
+import capaCorte from './assets/corte.png';
+import capaTrono from './assets/trono.png';
+import capaPriorado from './assets/priorado.png';
+import capaCoracao from './assets/coracao.png';
+import capaNarnia from './assets/narnia.png';
+import capaInstrumentos from './assets/instrumentos.png';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
@@ -114,7 +120,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Grandioso', 'Épico', 'Mitológico', 'Profético'],
     bookSuggestion: 'Trono de Vidro — Sarah J. Maas',
     bookSynopsis: 'Celaena Sardothien, uma jovem assassina com uma dívida imortal, é forçada a competir em um torneio mortal para se tornar a Campeã do Rei e ganhar sua eventual liberdade.',
-    bookCover: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=400&q=80',
+    bookCover: capaTrono,
     authors: 'Tolkien · Sanderson · Sarah J. Maas',
   },
   dark: {
@@ -126,7 +132,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Sombrio', 'Visceral', 'Intenso', 'Complexo'],
     bookSuggestion: 'Coração Lascivo',
     bookSynopsis: 'Uma narrativa visceral e de escolhas morais cinzentas, onde segredos profundos, paixões proibidas e sombras implacáveis moldam o destino de personagens impiedosos.',
-    bookCover: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=80',
+    bookCover: capaCoracao,
     authors: 'Joe Abercrombie · V.E. Schwab',
   },
   urban: {
@@ -138,7 +144,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Contemporâneo', 'Misterioso', 'Dualista', 'Perspicaz'],
     bookSuggestion: 'Cidade dos Ossos (Os Instrumentos Mortais)',
     bookSynopsis: 'Clary Fray testemunha um assassinato cometido por jovens cobertos de tatuagens misteriosas e descobre um mundo oculto de Caçadores de Sombras nas ruas de Nova York.',
-    bookCover: 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=400&q=80',
+    bookCover: capaInstrumentos,
     authors: 'Neil Gaiman · Cassandra Clare · Jim Butcher',
   },
   romantasy: {
@@ -150,7 +156,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Apaixonado', 'Intenso', 'Mágico', 'Emotivo'],
     bookSuggestion: 'Corte de Rosas e Espinhos — Sarah J. Maas',
     bookSynopsis: 'Ao matar uma lobalsa na floresta, Feyre é levada a uma terra mágica e perigosa por uma criatura feérica. O que começa como hostilidade se transforma em uma paixão capaz de desafiar impérios.',
-    bookCover: 'https://images.unsplash.com/photo-1495640388908-05fa85288e61?auto=format&fit=crop&w=400&q=80',
+    bookCover: capaCorte,
     authors: 'Sarah J. Maas · Rebecca Yarros · Holly Black',
   },
   historical: {
@@ -162,7 +168,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Histórico', 'Ritualístico', 'Atmosférico', 'Erudito'],
     bookSuggestion: 'O Priorado da Laranjeira — Samantha Shannon',
     bookSynopsis: 'Um mundo dividido e ameaçado por um despertar dracônico ancestral. Rainhas sem herdeiros, magas secretas e cavaleiros precisam unir forças para evitar a destruição total.',
-    bookCover: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=400&q=80',
+    bookCover: capaPriorado,
     authors: 'Susanna Clarke · Naomi Novik · Samantha Shannon',
   },
   portal: {
@@ -174,7 +180,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Maravilhoso', 'Transformador', 'Descoberta', 'Reinvenção'],
     bookSuggestion: 'As Crônicas de Nárnia — C.S. Lewis',
     bookSynopsis: 'Através de um guarda-roupa empoeirado, irmãos comuns entram em um mundo mágico congelado em um inverno eterno por uma Feiticeira Branca, onde animais falam e o Leão Aslan desperta.',
-    bookCover: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=400&q=80',
+    bookCover: capaNarnia,
     authors: 'C.S. Lewis · Lev Grossman · Seanan McGuire',
   },
 };
@@ -187,7 +193,7 @@ function calculateResult(answers: Subgenre[]): Subgenre {
   return Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0] as Subgenre;
 }
 
-/* ─── SVG Ornaments ─────────────────────────────────────────────────────── */
+/* ─── Componentes Visuais ─────────────────────────────────────────────────── */
 
 function Filigrana({ flip = false }: { flip?: boolean }) {
   return (
@@ -211,12 +217,11 @@ function Filigrana({ flip = false }: { flip?: boolean }) {
   );
 }
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary';
 
 const VARIANT_STYLES: Record<ButtonVariant, { bg: string; color: string; shadow: string }> = {
   primary: { bg: '#560319', color: '#F5F3E7', shadow: '0 4px 20px rgba(86,3,25,0.6)' },
   secondary: { bg: '#4B5320', color: '#F5F3E7', shadow: '0 4px 20px rgba(75,83,32,0.6)' },
-  ghost: { bg: 'transparent', color: '#D4AF37', shadow: 'none' },
 };
 
 function DiamondButton({
@@ -447,7 +452,7 @@ export default function App() {
     if (audioRef.current) {
       audioRef.current.volume = 0.4;
       audioRef.current.play().catch(err => {
-        console.log("Reprodução automática impedida:", err);
+        console.warn("Reprodução automática impedida pelo navegador:", err);
       });
     }
 
@@ -482,10 +487,12 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#0c090a' }}>
+      {/* Elemento de áudio com loop ativado nativamente e import asset do Vite */}
       <audio 
         ref={audioRef} 
         src={backgroundMusic} 
         loop 
+        preload="auto"
       />
 
       {screen === 'hero' && <HeroSection onStart={startQuiz} />}
