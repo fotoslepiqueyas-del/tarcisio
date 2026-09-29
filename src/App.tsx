@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
-import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
 
-// Imports das capas da pasta assets
+// Imports da pasta src/assets/
+import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
 import capaCorte from './assets/corte.png';
 import capaTrono from './assets/trono.png';
 import capaPriorado from './assets/priorado.png';
@@ -143,7 +143,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Contemporâneo', 'Misterioso', 'Dualista', 'Perspicaz'],
     bookSuggestion: 'Cidade dos Ossos (Os Instrumentos Mortais)',
     bookSynopsis: 'Clary Fray testemunha um assassinato cometido por jovens cobertos de tatuagens misteriosas e descobre um mundo oculto de Caçadores de Sombras nas ruas de Nova York.',
-    bookCover: capaCorte, // Usando corte provisoriamente ou se preferir pode duplicar
+    bookCover: capaCorte,
     authors: 'Neil Gaiman · Cassandra Clare · Jim Butcher',
   },
   romantasy: {
@@ -490,6 +490,7 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#0c090a' }}>
+      {/* Player de áudio da Enya mapeado via import do src/assets */}
       <audio 
         ref={audioRef} 
         src={backgroundMusic} 
