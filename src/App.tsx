@@ -25,6 +25,7 @@ interface SubgenreResult {
   description: string;
   emblem: string;
   traits: string[];
+  bookSuggestion: string;
   authors: string;
 }
 
@@ -104,54 +105,60 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     title: 'Alta Fantasia Épica',
     subtitle: 'Reinos Imortais & Profecias das Eras',
     description:
-      'Sua alma pulsa com o ritmo das batalhas eternas. Você é feito de lendas e estrelas — do tipo que sobrevive a guerras, ergue impérios e reescreve profecias. Os grandes mapas do mundo chamam seu nome, e dragões dobram seus pescoços para ouvi-lo. A Jornada do Herói é o seu ritmo cardíaco; o sacrifício pelo bem maior, a sua religião.',
-    emblem: '🏰',
+      'Sua alma pulsa com o ritmo das batalhas eternas. Você é feito de lendas e estrelas — do tipo que sobrevive a guerras, ergue impérios e reescreve profecias. Os grandes mapas do mundo chamam seu nome, e dragões dobram seus pescoços para ouvi-lo.',
+    emblem: '⚔️',
     traits: ['Grandioso', 'Épico', 'Mitológico', 'Profético'],
-    authors: 'Tolkien · Sanderson · George R.R. Martin',
+    bookSuggestion: 'Trono de Vidro (Sarah J. Maas)',
+    authors: 'Tolkien · Sanderson · Sarah J. Maas',
   },
   dark: {
     title: 'Fantasia Sombria',
     subtitle: 'Fronteiras entre o Crepúsculo e o Abismo',
     description:
-      'As trevas não te assustam — elas te fascinam. Você caminha nas bordas do mundo, onde a magia corrói a sanidade e os heróis pagam preços sangrentos por cada vitória. A beleza e o horror coexistem em você como gêmeos inseparáveis. Você prefere verdades cruéis a mentiras confortáveis, e isso te torna extraordinário.',
-    emblem: '🌑',
-    traits: ['Sombrio', 'Visceral', 'Filosófico', 'Complexo'],
-    authors: 'Joe Abercrombie · V.E. Schwab · Patrick Rothfuss',
+      'As trevas não te assustam — elas te fascinam. Você caminha nas bordas do mundo, onde a magia corrói a sanidade e os heróis pagam preços sangrentos por cada vitória. A beleza e o horror coexistem em você.',
+    emblem: '🖤',
+    traits: ['Sombrio', 'Visceral', 'Intenso', 'Complexo'],
+    bookSuggestion: 'Coração Lascivo',
+    authors: 'Joe Abercrombie · V.E. Schwab',
   },
   urban: {
     title: 'Fantasia Urbana',
     subtitle: 'Ruas Encantadas de Metrópoles Secretas',
     description:
-      'Você enxerga o que os outros ignoram — a magia escondida nos becos da cidade, os fae disfarçados de mendigos, os vampiros nos mesmos cafés que você. Seu mundo tem duas camadas: o mundano e o sobrenatural, e você habita ambas com igual conforto e uma ironia que encanta.',
+      'Você enxerga o que os outros ignoram — a magia escondida nos becos da cidade, os segredos urbanos e as sociedades ocultas sob o asfalto. Seu mundo habita o contraste entre o moderno e o místico.',
     emblem: '🌃',
     traits: ['Contemporâneo', 'Misterioso', 'Dualista', 'Perspicaz'],
+    bookSuggestion: 'Cidade dos Ossos / Instrumentos Mortais (Cassandra Clare)',
     authors: 'Neil Gaiman · Cassandra Clare · Jim Butcher',
   },
   romantasy: {
     title: 'Romantasy',
     subtitle: 'Reinos onde o Amor é a Maior das Magias',
     description:
-      'Para você, nenhuma batalha épica supera a tensão de dois corações destinados que resistem ao destino. Você lê nas entrelinhas entre o poder e o desejo, no olhar que diz mais do que qualquer profecia. Cortes fae, príncipes inacessíveis e amores impossíveis são o seu alimento espiritual.',
+      'Para você, nenhuma batalha épica supera a tensão de dois corações destinados que resistem ao destino. Você lê nas entrelinhas entre o poder e o desejo, onde cortes místicas e amores impossíveis reinam.',
     emblem: '🌹',
     traits: ['Apaixonado', 'Intenso', 'Mágico', 'Emotivo'],
+    bookSuggestion: 'Corte de Rosas e Espinhos',
     authors: 'Sarah J. Maas · Rebecca Yarros · Holly Black',
   },
   historical: {
     title: 'Fantasia Histórica',
     subtitle: 'Eras Perdidas onde a Magia Moldou a História',
     description:
-      'Você sente o cheiro de pergaminhos antigos e escuta o sussurro de civilizações esquecidas. A magia, para você, está enraizada na história — nos rituais da Roma Antiga, nas feiticeiras medievais, nos alquimistas do Renascimento. Você estuda o passado para compreender o presente encantado.',
+      'Você sente o cheiro de pergaminhos antigos e escuta o sussurro de civilizações esquecidas. A magia, para você, está enraizada no passado, nos rituais e nos segredos de eras remotas.',
     emblem: '🕯️',
     traits: ['Histórico', 'Ritualístico', 'Atmosférico', 'Erudito'],
-    authors: 'Susanna Clarke · Naomi Novik · Guy Gavriel Kay',
+    bookSuggestion: 'O Priorado da Laranjeira (Samantha Shannon)',
+    authors: 'Susanna Clarke · Naomi Novik · Samantha Shannon',
   },
   portal: {
     title: 'Fantasia de Portal',
     subtitle: 'Além — nos Mundos do Outro Lado do Espelho',
     description:
-      'Você sempre olhou para espelhos, armários e fontes antigas com uma pergunta nos olhos: e se? Sua fantasia favorita começa quando um ser ordinário atravessa o limiar do impossível e descobre ser extraordinário. A maravilha da descoberta e a reinvenção de si mesmo em um mundo novo alimentam a sua imaginação.',
+      'Você sempre olhou para espelhos, armários e fontes antigas com uma pergunta nos olhos: e se? Sua fantasia favorita começa quando um ser ordinário atravessa o limiar do impossível.',
     emblem: '🌀',
     traits: ['Maravilhoso', 'Transformador', 'Descoberta', 'Reinvenção'],
+    bookSuggestion: 'As Crônicas de Nárnia (C.S. Lewis)',
     authors: 'C.S. Lewis · Lev Grossman · Seanan McGuire',
   },
 };
@@ -188,36 +195,13 @@ function Filigrana({ flip = false }: { flip?: boolean }) {
   );
 }
 
-function WaxSeal({ letter = 'RM', size = 60 }: { letter?: string; size?: number }) {
-  const r = size / 2;
-  return (
-    <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size}>
-      <circle cx={r} cy={r} r={r - 2} fill="#560319" stroke="#D4AF37" strokeWidth="1.5" />
-      <circle cx={r} cy={r} r={r - 8} fill="none" stroke="#D4AF37" strokeWidth="0.5" />
-      <text
-        x="50%"
-        y="54%"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="#D4AF37"
-        fontSize={size * 0.35}
-        fontFamily="Georgia, serif"
-        fontStyle="italic"
-        fontWeight="bold"
-      >
-        {letter}
-      </text>
-    </svg>
-  );
-}
-
-/* ─── Diamond Button ─────────────────────────────────────────────────────── */
+/* ─── Diamond Button (Estilo cartões da referência) ──────────────────────── */
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 
 const VARIANT_STYLES: Record<ButtonVariant, { bg: string; color: string; shadow: string }> = {
-  primary: { bg: '#560319', color: '#F5F3E7', shadow: '0 4px 20px rgba(86,3,25,0.4)' },
-  secondary: { bg: '#4B5320', color: '#F5F3E7', shadow: '0 4px 20px rgba(75,83,32,0.4)' },
+  primary: { bg: '#560319', color: '#F5F3E7', shadow: '0 4px 20px rgba(86,3,25,0.6)' },
+  secondary: { bg: '#4B5320', color: '#F5F3E7', shadow: '0 4px 20px rgba(75,83,32,0.6)' },
   ghost: { bg: 'transparent', color: '#D4AF37', shadow: 'none' },
 };
 
@@ -288,15 +272,17 @@ function GoldDivider({ glyph = '✦' }: { glyph?: string }) {
   );
 }
 
+/* Card com fundo escuro e pergaminho envelhecido sofisticado (Vibe da imagem) */
 function ParchmentCard({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <div
       style={{
         position: 'relative',
-        background: 'linear-gradient(145deg, #f5edcf 0%, #ede2be 35%, #f2e8cc 65%, #e9ddb9 100%)',
-        border: '1px solid rgba(212,175,55,0.6)',
-        boxShadow: '0 12px 48px rgba(0,0,0,0.2), inset 0 0 40px rgba(139,110,50,0.1)',
+        background: 'linear-gradient(145deg, #231218 0%, #1a1a1a 50%, #152212 100%)',
+        border: '1.5px solid rgba(212,175,55,0.7)',
+        boxShadow: '0 16px 50px rgba(0,0,0,0.6), inset 0 0 40px rgba(86,3,25,0.3)',
         padding: '2.5rem 2rem',
+        color: '#F5F3E7',
         ...style,
       }}
     >
@@ -306,29 +292,20 @@ function ParchmentCard({ children, style = {} }: { children: React.ReactNode; st
   );
 }
 
-function Header() {
-  return (
-    <header style={{ background: '#F5F3E7', borderBottom: '1px solid rgba(212,175,55,0.4)', padding: '1rem' }}>
-      <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-        <WaxSeal letter="RM" size={50} />
-        <h1 style={{ fontFamily: "Georgia, serif", color: '#333', fontSize: '1.5rem', margin: 0 }}>O Reino Mágico</h1>
-      </div>
-    </header>
-  );
-}
-
 function HeroSection({ onStart }: { onStart: () => void }) {
   return (
-    <main style={{ background: 'linear-gradient(158deg, #130609 0%, #0e1808 45%, #140f04 100%)', minHeight: 'calc(100vh - 90px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
       <ParchmentCard style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
         <Filigrana />
-        <h2 style={{ fontFamily: "Georgia, serif", color: '#560319', fontSize: '2.2rem', margin: '1rem 0' }}>Qual é o seu Subgênero de Fantasia?</h2>
+        <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2.4rem', margin: '1.2rem 0', textShadow: '0 2px 10px rgba(212,175,55,0.4)' }}>
+          Qual é o seu Subgênero de Fantasia?
+        </h2>
         <GoldDivider />
-        <p style={{ fontFamily: "Georgia, serif", fontStyle: 'italic', color: '#333', fontSize: '1.1rem', margin: '1.5rem 0' }}>
-          Responda a 6 perguntas e descubra a qual mundo literário você pertence.
+        <p style={{ fontFamily: "Georgia, serif", fontStyle: 'italic', color: '#E6C7C2', fontSize: '1.15rem', margin: '1.5rem 0', lineHeight: 1.6 }}>
+          Responda a 6 perguntas sob o véu do mistério e descubra a qual mundo literário a sua alma pertence.
         </p>
         <Filigrana flip />
-        <div style={{ marginTop: '1.5rem' }}>
+        <div style={{ marginTop: '1.8rem' }}>
           <DiamondButton onClick={onStart} variant="primary" wide>Iniciar Jornada</DiamondButton>
         </div>
       </ParchmentCard>
@@ -341,18 +318,20 @@ function QuizSection({ question, questionIndex, total, selected, onSelect, onNex
   const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
 
   return (
-    <main style={{ background: '#F5F3E7', minHeight: 'calc(100vh - 90px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
-      <div style={{ maxWidth: '600px', width: '100%' }}>
-        <p style={{ textAlign: 'center', color: '#560319', fontSize: '0.8rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <div style={{ maxWidth: '620px', width: '100%' }}>
+        <p style={{ textAlign: 'center', color: '#D4AF37', fontSize: '0.8rem', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem', fontFamily: "Georgia, serif" }}>
           Pergunta {questionIndex + 1} de {total}
         </p>
         <ParchmentCard>
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: "Georgia, serif", color: '#333', fontSize: '1.8rem', margin: 0 }}>{question.question}</h2>
-            <p style={{ fontStyle: 'italic', color: '#7a6a4e', fontSize: '0.9rem' }}>{question.subtitle}</p>
+            <h2 style={{ fontFamily: "Georgia, serif", color: '#F5F3E7', fontSize: '1.85rem', margin: 0, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+              {question.question}
+            </h2>
+            <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.95rem', marginTop: '6px' }}>{question.subtitle}</p>
             <GoldDivider glyph="◆" />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {question.options.map((opt: any, idx: number) => {
               const isSelected = selected === opt.subgenre;
               return (
@@ -364,18 +343,20 @@ function QuizSection({ question, questionIndex, total, selected, onSelect, onNex
                     textAlign: 'left',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '12px',
-                    padding: '12px 16px',
-                    background: isSelected ? '#4B5320' : 'rgba(255,255,255,0.4)',
-                    border: '1px solid #D4AF37',
+                    gap: '14px',
+                    padding: '14px 18px',
+                    background: isSelected ? 'linear-gradient(135deg, #4B5320 0%, #2c3212 100%)' : 'rgba(35, 18, 24, 0.7)',
+                    border: isSelected ? '1.5px solid #D4AF37' : '1px solid rgba(212,175,55,0.3)',
                     cursor: 'pointer',
-                    color: isSelected ? '#F5F3E7' : '#333',
+                    color: isSelected ? '#F5F3E7' : '#E6C7C2',
                     fontFamily: "Georgia, serif",
-                    fontSize: '1rem',
+                    fontSize: '1.05rem',
+                    boxShadow: isSelected ? '0 4px 15px rgba(75,83,32,0.4)' : 'none',
+                    transition: 'all 0.2s ease',
                   }}
                 >
-                  <span style={{ fontWeight: 'bold' }}>{OPTION_LETTERS[idx]}.</span>
-                  <span>{opt.icon}</span>
+                  <span style={{ fontWeight: 'bold', color: '#D4AF37' }}>{OPTION_LETTERS[idx]}.</span>
+                  <span style={{ fontSize: '1.2rem' }}>{opt.icon}</span>
                   <span style={{ fontStyle: 'italic' }}>{opt.text}</span>
                 </button>
               );
@@ -394,17 +375,29 @@ function QuizSection({ question, questionIndex, total, selected, onSelect, onNex
 
 function ResultSection({ result, onReset }: any) {
   return (
-    <main style={{ background: 'linear-gradient(158deg, #130609 0%, #0c1507 45%, #13100a 100%)', minHeight: 'calc(100vh - 90px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
-      <ParchmentCard style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
-        <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>{result.emblem}</div>
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <ParchmentCard style={{ maxWidth: '640px', width: '100%', textAlign: 'center' }}>
+        <div style={{ fontSize: '3.2rem', marginBottom: '0.2rem', filter: 'drop-shadow(0 2px 8px rgba(212,175,55,0.4))' }}>{result.emblem}</div>
         <Filigrana />
-        <h2 style={{ fontFamily: "Georgia, serif", color: '#560319', fontSize: '2.5rem', margin: '0.5rem 0' }}>{result.title}</h2>
-        <p style={{ fontStyle: 'italic', color: '#560319', marginBottom: '1rem' }}>{result.subtitle}</p>
+        <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2.5rem', margin: '0.5rem 0' }}>{result.title}</h2>
+        <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '1.05rem', marginBottom: '1rem' }}>{result.subtitle}</p>
+        
         <GoldDivider glyph="◆ ◆ ◆" />
-        <p style={{ fontStyle: 'italic', color: '#333', lineHeight: '1.6', textAlign: 'left', margin: '1rem 0' }}>{result.description}</p>
-        <p style={{ fontSize: '0.85rem', color: '#7a6a4e', margin: '1.5rem 0' }}>Autores de referência: {result.authors}</p>
+        
+        <p style={{ fontStyle: 'italic', color: '#F5F3E7', lineHeight: '1.7', textAlign: 'left', margin: '1.2rem 0', fontSize: '1.05rem' }}>
+          {result.description}
+        </p>
+
+        {/* Livro Indicado */}
+        <div style={{ background: 'rgba(86, 3, 25, 0.4)', border: '1px solid #D4AF37', padding: '14px', margin: '1.5rem 0', borderRadius: '4px' }}>
+          <p style={{ fontSize: '0.85rem', color: '#E6C7C2', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '4px' }}>📚 Obra Literária Recomendada</p>
+          <p style={{ fontFamily: "Georgia, serif", fontSize: '1.25rem', color: '#D4AF37', fontWeight: 'bold' }}>{result.bookSuggestion}</p>
+        </div>
+
+        <p style={{ fontSize: '0.9rem', color: '#bfa89b', fontStyle: 'italic', margin: '1rem 0' }}>Autores essenciais: {result.authors}</p>
+        
         <Filigrana flip />
-        <div style={{ marginTop: '1.5rem' }}>
+        <div style={{ marginTop: '1.8rem' }}>
           <DiamondButton onClick={onReset} variant="primary">Refazer o Quiz</DiamondButton>
         </div>
       </ParchmentCard>
@@ -459,15 +452,17 @@ export default function App() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F5F3E7' }}>
+    <div style={{ minHeight: '100vh', background: '#0c090a' }}>
       <audio 
         ref={audioRef} 
         src={backgroundMusic} 
         loop 
       />
 
-      <Header />
+      {/* O cabeçalho com o selo "RM" foi totalmente removido daqui */}
+
       {screen === 'hero' && <HeroSection onStart={startQuiz} />}
+
       {screen === 'quiz' && (
         <QuizSection
           question={questions[questionIndex]}
@@ -478,7 +473,10 @@ export default function App() {
           onNext={handleNext}
         />
       )}
-      {screen === 'result' && result && <ResultSection result={result} onReset={resetQuiz} />}
+
+      {screen === 'result' && result && (
+        <ResultSection result={result} onReset={resetQuiz} />
+      )}
     </div>
   );
 }
