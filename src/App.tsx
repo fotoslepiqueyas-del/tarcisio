@@ -1,16 +1,15 @@
 import React, { useState, useRef } from 'react';
 
 
-import backgroundMusic from './src/assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
-// Imports exatos da pasta src/assets/ 
-// (Se alguma imagem for .jpg no seu computador, mude a extensão abaixo de .png para .jpg)
-import backgroundMusic from './src/assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
-import capaCorte from './src/assets/corte.png';
-import capaTrono from './src/assets/trono.png';
-import capaPriorado from './src/assets/priorado.png';
-import capaCoracao from './src/assets/coracao.png';
-import capaNarnia from './src/assets/narnia.png';
-
+import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
+// Imports exatos baseados no seu GitHub:
+import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
+import capaCorte from './assets/corte.png';
+import capaTrono from './assets/trono.png';
+import capaPriorado from './assets/priorado.png';
+import capaCoracao from './assets/coracao.png';
+import capaNarnia from './assets/narnia.png';
+import capaInstrumentos from './assets/instrumentos.png';
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 <audio 
   ref={audioRef} 
@@ -142,7 +141,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     bookCover: capaCoracao,
     authors: 'Joe Abercrombie · V.E. Schwab',
   },
-  urban: {
+urban: {
     title: 'Fantasia Urbana',
     subtitle: 'Ruas Encantadas de Metrópoles Secretas',
     description:
@@ -151,7 +150,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Contemporâneo', 'Misterioso', 'Dualista', 'Perspicaz'],
     bookSuggestion: 'Cidade dos Ossos (Os Instrumentos Mortais)',
     bookSynopsis: 'Clary Fray testemunha um assassinato cometido por jovens cobertos de tatuagens misteriosas e descobre um mundo oculto de Caçadores de Sombras nas ruas de Nova York.',
-    bookCover: capaCorte,
+    bookCover: capaInstrumentos, // Usando a imagem correta do repositório
     authors: 'Neil Gaiman · Cassandra Clare · Jim Butcher',
   },
   romantasy: {
