@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 
 // Ajuste o nome abaixo exatamente para o nome do arquivo de áudio que está na sua pasta src/
-import backgroundMusic from './enya.mp3';
 import capaCorte from './assets/corte.png';
 import capaTrono from './assets/trono.png';
 import capaPriorado from './assets/priorado.png';
@@ -133,7 +132,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     bookSuggestion: 'Coração Lascivo',
     bookSynopsis: 'Uma narrativa visceral e de escolhas morais cinzentas, onde segredos profundos, paixões proibidas e sombras implacáveis moldam o destino de personagens impiedosos.',
     bookCover: capaCoracao,
-    authors: 'Joe Abercrombie · V.E. Schwab',
+    authors: 'Keri Lake · Jennifer L. Armentrout',
   },
   urban: {
     title: 'Fantasia Urbana',
@@ -490,7 +489,7 @@ export default function App() {
       {/* Player de áudio centralizado na raiz do App com loop nativo */}
       <audio 
         ref={audioRef} 
-        src={backgroundMusic} 
+        src={/enya.mp3} 
         loop 
         preload="auto"
       />
