@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
@@ -418,7 +419,16 @@ export default function App() {
   const [selected, setSelected] = useState<Subgenre | null>(null);
   const [result, setResult] = useState<SubgenreResult | null>(null);
 
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   function startQuiz() {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.4;
+      audioRef.current.play().catch(err => {
+        console.log("Reprodução automática impedida:", err);
+      });
+    }
+
     setScreen('quiz');
     setQuestionIndex(0);
     setAnswers([]);
@@ -450,6 +460,12 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#F5F3E7' }}>
+      <audio 
+        ref={audioRef} 
+        src={backgroundMusic} 
+        loop 
+      />
+
       <Header />
       {screen === 'hero' && <HeroSection onStart={startQuiz} />}
       {screen === 'quiz' && (
