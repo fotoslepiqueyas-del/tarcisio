@@ -412,6 +412,12 @@ function ResultSection({ result, onReset }: any) {
             ✦ Obra Recomendada ✦
           </p>
           <div style={{ position: 'relative', padding: '6px', background: 'rgba(212, 175, 55, 0.1)', border: '1px solid #D4AF37', boxShadow: '0 8px 25px rgba(0,0,0,0.6)' }}>
+           <audio 
+               ref={audioRef} 
+               src="/enya.mp3" 
+               loop 
+               preload="auto"
+           />
             <img 
               src={result.bookCover} 
               alt={result.bookSuggestion} 
