@@ -1,21 +1,9 @@
 import React, { useState, useRef } from 'react';
 
+// Apenas a música fica importada do src/assets (que sabemos que está lá)
+import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
 
-import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
-// Imports exatos baseados no seu GitHub:
-import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
-import capaCorte from './assets/corte.png';
-import capaTrono from './assets/trono.png';
-import capaPriorado from './assets/priorado.png';
-import capaCoracao from './assets/coracao.png';
-import capaNarnia from './assets/narnia.png';
-import capaInstrumentos from './assets/instrumentos.png';
 /* ─── Types ─────────────────────────────────────────────────────────────── */
-<audio 
-  ref={audioRef} 
-  src={backgroundMusic} 
-  loop 
-/>
 
 type Screen = 'hero' | 'quiz' | 'result';
 type Subgenre = 'epic' | 'dark' | 'urban' | 'romantasy' | 'historical' | 'portal';
@@ -126,7 +114,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Grandioso', 'Épico', 'Mitológico', 'Profético'],
     bookSuggestion: 'Trono de Vidro — Sarah J. Maas',
     bookSynopsis: 'Celaena Sardothien, uma jovem assassina com uma dívida imortal, é forçada a competir em um torneio mortal para se tornar a Campeã do Rei e ganhar sua eventual liberdade.',
-    bookCover: capaTrono,
+    bookCover: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=400&q=80',
     authors: 'Tolkien · Sanderson · Sarah J. Maas',
   },
   dark: {
@@ -138,10 +126,10 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Sombrio', 'Visceral', 'Intenso', 'Complexo'],
     bookSuggestion: 'Coração Lascivo',
     bookSynopsis: 'Uma narrativa visceral e de escolhas morais cinzentas, onde segredos profundos, paixões proibidas e sombras implacáveis moldam o destino de personagens impiedosos.',
-    bookCover: capaCoracao,
+    bookCover: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=80',
     authors: 'Joe Abercrombie · V.E. Schwab',
   },
-urban: {
+  urban: {
     title: 'Fantasia Urbana',
     subtitle: 'Ruas Encantadas de Metrópoles Secretas',
     description:
@@ -150,7 +138,7 @@ urban: {
     traits: ['Contemporâneo', 'Misterioso', 'Dualista', 'Perspicaz'],
     bookSuggestion: 'Cidade dos Ossos (Os Instrumentos Mortais)',
     bookSynopsis: 'Clary Fray testemunha um assassinato cometido por jovens cobertos de tatuagens misteriosas e descobre um mundo oculto de Caçadores de Sombras nas ruas de Nova York.',
-    bookCover: capaInstrumentos, // Usando a imagem correta do repositório
+    bookCover: 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=400&q=80',
     authors: 'Neil Gaiman · Cassandra Clare · Jim Butcher',
   },
   romantasy: {
@@ -162,7 +150,7 @@ urban: {
     traits: ['Apaixonado', 'Intenso', 'Mágico', 'Emotivo'],
     bookSuggestion: 'Corte de Rosas e Espinhos — Sarah J. Maas',
     bookSynopsis: 'Ao matar uma lobalsa na floresta, Feyre é levada a uma terra mágica e perigosa por uma criatura feérica. O que começa como hostilidade se transforma em uma paixão capaz de desafiar impérios.',
-    bookCover: capaCorte,
+    bookCover: 'https://images.unsplash.com/photo-1495640388908-05fa85288e61?auto=format&fit=crop&w=400&q=80',
     authors: 'Sarah J. Maas · Rebecca Yarros · Holly Black',
   },
   historical: {
@@ -174,7 +162,7 @@ urban: {
     traits: ['Histórico', 'Ritualístico', 'Atmosférico', 'Erudito'],
     bookSuggestion: 'O Priorado da Laranjeira — Samantha Shannon',
     bookSynopsis: 'Um mundo dividido e ameaçado por um despertar dracônico ancestral. Rainhas sem herdeiros, magas secretas e cavaleiros precisam unir forças para evitar a destruição total.',
-    bookCover: capaPriorado,
+    bookCover: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=400&q=80',
     authors: 'Susanna Clarke · Naomi Novik · Samantha Shannon',
   },
   portal: {
@@ -186,7 +174,7 @@ urban: {
     traits: ['Maravilhoso', 'Transformador', 'Descoberta', 'Reinvenção'],
     bookSuggestion: 'As Crônicas de Nárnia — C.S. Lewis',
     bookSynopsis: 'Através de um guarda-roupa empoeirado, irmãos comuns entram em um mundo mágico congelado em um inverno eterno por uma Feiticeira Branca, onde animais falam e o Leão Aslan desperta.',
-    bookCover: capaNarnia,
+    bookCover: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=400&q=80',
     authors: 'C.S. Lewis · Lev Grossman · Seanan McGuire',
   },
 };
@@ -409,7 +397,6 @@ function ResultSection({ result, onReset }: any) {
         
         <GoldDivider glyph="◆ ◆ ◆" />
         
-        {/* Descrição do Gênero */}
         <p style={{ fontStyle: 'italic', color: '#F5F3E7', lineHeight: '1.7', textAlign: 'left', margin: '1.2rem 0', fontSize: '1.05rem' }}>
           {result.description}
         </p>
@@ -427,12 +414,10 @@ function ResultSection({ result, onReset }: any) {
             />
           </div>
           
-          {/* Título do Livro */}
           <h3 style={{ fontFamily: "Georgia, serif", fontSize: '1.35rem', color: '#D4AF37', fontWeight: 'bold', marginTop: '14px', marginBottom: '8px' }}>
             {result.bookSuggestion}
           </h3>
 
-          {/* Sinopse do Livro Abaixo do Título */}
           <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.98rem', lineHeight: '1.6', maxWidth: '520px', margin: '0 auto', textAlign: 'center', background: 'rgba(86, 3, 25, 0.3)', padding: '12px 16px', borderLeft: '2px solid #D4AF37', borderRight: '2px solid #D4AF37' }}>
             "{result.bookSynopsis}"
           </p>
