@@ -390,6 +390,21 @@ function QuizSection({ question, questionIndex, total, selected, onSelect, onNex
     </main>
   );
 }
+const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  function startQuiz() {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.4;
+      audioRef.current.play().catch(err => {
+        console.warn("Reprodução automática impedida pelo navegador:", err);
+      });
+    }
+
+    setScreen('quiz');
+    setQuestionIndex(0);
+    setAnswers([]);
+    setSelected(null);
+  }
 
 function ResultSection({ result, onReset }: any) {
   return (
