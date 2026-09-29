@@ -1,6 +1,13 @@
 import React, { useState, useRef } from 'react';
 import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
 
+// Imports das capas da pasta assets
+import capaCorte from './assets/corte.png';
+import capaTrono from './assets/trono.png';
+import capaPriorado from './assets/priorado.png';
+import capaCoracao from './assets/coracao.png';
+import capaNarnia from './assets/narnia.png';
+
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
 type Screen = 'hero' | 'quiz' | 'result';
@@ -26,6 +33,8 @@ interface SubgenreResult {
   emblem: string;
   traits: string[];
   bookSuggestion: string;
+  bookSynopsis: string;
+  bookCover: string;
   authors: string;
 }
 
@@ -108,7 +117,9 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
       'Sua alma pulsa com o ritmo das batalhas eternas. Você é feito de lendas e estrelas — do tipo que sobrevive a guerras, ergue impérios e reescreve profecias. Os grandes mapas do mundo chamam seu nome, e dragões dobram seus pescoços para ouvi-lo.',
     emblem: '⚔️',
     traits: ['Grandioso', 'Épico', 'Mitológico', 'Profético'],
-    bookSuggestion: 'Trono de Vidro (Sarah J. Maas)',
+    bookSuggestion: 'Trono de Vidro — Sarah J. Maas',
+    bookSynopsis: 'Celaena Sardothien, uma jovem assassina com uma dívida imortal, é forçada a competir em um torneio mortal para se tornar a Campeã do Rei e ganhar sua eventual liberdade.',
+    bookCover: capaTrono,
     authors: 'Tolkien · Sanderson · Sarah J. Maas',
   },
   dark: {
@@ -119,6 +130,8 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     emblem: '🖤',
     traits: ['Sombrio', 'Visceral', 'Intenso', 'Complexo'],
     bookSuggestion: 'Coração Lascivo',
+    bookSynopsis: 'Uma narrativa visceral e de escolhas morais cinzentas, onde segredos profundos, paixões proibidas e sombras implacáveis moldam o destino de personagens impiedosos.',
+    bookCover: capaCoracao,
     authors: 'Joe Abercrombie · V.E. Schwab',
   },
   urban: {
@@ -128,7 +141,9 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
       'Você enxerga o que os outros ignoram — a magia escondida nos becos da cidade, os segredos urbanos e as sociedades ocultas sob o asfalto. Seu mundo habita o contraste entre o moderno e o místico.',
     emblem: '🌃',
     traits: ['Contemporâneo', 'Misterioso', 'Dualista', 'Perspicaz'],
-    bookSuggestion: 'Cidade dos Ossos / Instrumentos Mortais (Cassandra Clare)',
+    bookSuggestion: 'Cidade dos Ossos (Os Instrumentos Mortais)',
+    bookSynopsis: 'Clary Fray testemunha um assassinato cometido por jovens cobertos de tatuagens misteriosas e descobre um mundo oculto de Caçadores de Sombras nas ruas de Nova York.',
+    bookCover: capaCorte, // Usando corte provisoriamente ou se preferir pode duplicar
     authors: 'Neil Gaiman · Cassandra Clare · Jim Butcher',
   },
   romantasy: {
@@ -138,7 +153,9 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
       'Para você, nenhuma batalha épica supera a tensão de dois corações destinados que resistem ao destino. Você lê nas entrelinhas entre o poder e o desejo, onde cortes místicas e amores impossíveis reinam.',
     emblem: '🌹',
     traits: ['Apaixonado', 'Intenso', 'Mágico', 'Emotivo'],
-    bookSuggestion: 'Corte de Rosas e Espinhos',
+    bookSuggestion: 'Corte de Rosas e Espinhos — Sarah J. Maas',
+    bookSynopsis: 'Ao matar uma lobalsa na floresta, Feyre é levada a uma terra mágica e perigosa por uma criatura feérica. O que começa como hostilidade se transforma em uma paixão capaz de desafiar impérios.',
+    bookCover: capaCorte,
     authors: 'Sarah J. Maas · Rebecca Yarros · Holly Black',
   },
   historical: {
@@ -148,7 +165,9 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
       'Você sente o cheiro de pergaminhos antigos e escuta o sussurro de civilizações esquecidas. A magia, para você, está enraizada no passado, nos rituais e nos segredos de eras remotas.',
     emblem: '🕯️',
     traits: ['Histórico', 'Ritualístico', 'Atmosférico', 'Erudito'],
-    bookSuggestion: 'O Priorado da Laranjeira (Samantha Shannon)',
+    bookSuggestion: 'O Priorado da Laranjeira — Samantha Shannon',
+    bookSynopsis: 'Um mundo dividido e ameaçado por um despertar dracônico ancestral. Rainhas sem herdeiros, magas secretas e cavaleiros precisam unir forças para evitar a destruição total.',
+    bookCover: capaPriorado,
     authors: 'Susanna Clarke · Naomi Novik · Samantha Shannon',
   },
   portal: {
@@ -158,7 +177,9 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
       'Você sempre olhou para espelhos, armários e fontes antigas com uma pergunta nos olhos: e se? Sua fantasia favorita começa quando um ser ordinário atravessa o limiar do impossível.',
     emblem: '🌀',
     traits: ['Maravilhoso', 'Transformador', 'Descoberta', 'Reinvenção'],
-    bookSuggestion: 'As Crônicas de Nárnia (C.S. Lewis)',
+    bookSuggestion: 'As Crônicas de Nárnia — C.S. Lewis',
+    bookSynopsis: 'Através de um guarda-roupa empoeirado, irmãos comuns entram em um mundo mágico congelado em um inverno eterno por uma Feiticeira Branca, onde animais falam e o Leão Aslan desperta.',
+    bookCover: capaNarnia,
     authors: 'C.S. Lewis · Lev Grossman · Seanan McGuire',
   },
 };
@@ -194,8 +215,6 @@ function Filigrana({ flip = false }: { flip?: boolean }) {
     </svg>
   );
 }
-
-/* ─── Diamond Button (Estilo cartões da referência) ──────────────────────── */
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 
@@ -272,7 +291,6 @@ function GoldDivider({ glyph = '✦' }: { glyph?: string }) {
   );
 }
 
-/* Card com fundo escuro e pergaminho envelhecido sofisticado (Vibe da imagem) */
 function ParchmentCard({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <div
@@ -384,17 +402,36 @@ function ResultSection({ result, onReset }: any) {
         
         <GoldDivider glyph="◆ ◆ ◆" />
         
+        {/* Descrição do Gênero */}
         <p style={{ fontStyle: 'italic', color: '#F5F3E7', lineHeight: '1.7', textAlign: 'left', margin: '1.2rem 0', fontSize: '1.05rem' }}>
           {result.description}
         </p>
 
-        {/* Livro Indicado */}
-        <div style={{ background: 'rgba(86, 3, 25, 0.4)', border: '1px solid #D4AF37', padding: '14px', margin: '1.5rem 0', borderRadius: '4px' }}>
-          <p style={{ fontSize: '0.85rem', color: '#E6C7C2', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '4px' }}>📚 Obra Literária Recomendada</p>
-          <p style={{ fontFamily: "Georgia, serif", fontSize: '1.25rem', color: '#D4AF37', fontWeight: 'bold' }}>{result.bookSuggestion}</p>
+        {/* CAPA CENTRALIZADA ABAIXO DO TEXTINHO DO GÊNERO */}
+        <div style={{ margin: '2rem 0 1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <p style={{ fontSize: '0.8rem', color: '#D4AF37', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '10px', fontWeight: 'bold' }}>
+            ✦ Obra Recomendada ✦
+          </p>
+          <div style={{ position: 'relative', padding: '6px', background: 'rgba(212, 175, 55, 0.1)', border: '1px solid #D4AF37', boxShadow: '0 8px 25px rgba(0,0,0,0.6)' }}>
+            <img 
+              src={result.bookCover} 
+              alt={result.bookSuggestion} 
+              style={{ width: '150px', height: '220px', objectFit: 'cover', display: 'block' }} 
+            />
+          </div>
+          
+          {/* Título do Livro */}
+          <h3 style={{ fontFamily: "Georgia, serif", fontSize: '1.35rem', color: '#D4AF37', fontWeight: 'bold', marginTop: '14px', marginBottom: '8px' }}>
+            {result.bookSuggestion}
+          </h3>
+
+          {/* Sinopse do Livro Abaixo do Título */}
+          <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.98rem', lineHeight: '1.6', maxWidth: '520px', margin: '0 auto', textAlign: 'center', background: 'rgba(86, 3, 25, 0.3)', padding: '12px 16px', borderLeft: '2px solid #D4AF37', borderRight: '2px solid #D4AF37' }}>
+            "{result.bookSynopsis}"
+          </p>
         </div>
 
-        <p style={{ fontSize: '0.9rem', color: '#bfa89b', fontStyle: 'italic', margin: '1rem 0' }}>Autores essenciais: {result.authors}</p>
+        <p style={{ fontSize: '0.9rem', color: '#bfa89b', fontStyle: 'italic', margin: '1.5rem 0 1rem' }}>Autores essenciais: {result.authors}</p>
         
         <Filigrana flip />
         <div style={{ marginTop: '1.8rem' }}>
@@ -458,8 +495,6 @@ export default function App() {
         src={backgroundMusic} 
         loop 
       />
-
-      {/* O cabeçalho com o selo "RM" foi totalmente removido daqui */}
 
       {screen === 'hero' && <HeroSection onStart={startQuiz} />}
 
