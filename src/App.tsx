@@ -1,757 +1,468 @@
-import { useState, useEffect } from "react"
+import React, { useState } from 'react';
 
-type Screen = "home" | "triage"
-type StatusLevel = "normal" | "attention" | "full"
+/* ─── Types ─────────────────────────────────────────────────────────────── */
 
-interface Hospital {
-  id: number
-  name: string
-  type: string
-  distance: string
-  status: StatusLevel
-  waitMin: number
-  address: string
+type Screen = 'hero' | 'quiz' | 'result';
+type Subgenre = 'epic' | 'dark' | 'urban' | 'romantasy' | 'historical' | 'portal';
+
+interface Option {
+  text: string;
+  icon: string;
+  subgenre: Subgenre;
 }
 
-const statusConfig = {
-  normal: {
-    label: "Fluxo Normal",
-    bg: "bg-[#E8F8EF]",
-    text: "text-[#27AE60]",
-    dot: "bg-[#27AE60]",
-    border: "border-[#27AE60]/20",
-  },
-  attention: {
-    label: "Atenção",
-    bg: "bg-[#FEF9E7]",
-    text: "text-[#F39C12]",
-    dot: "bg-[#F39C12]",
-    border: "border-[#F39C12]/20",
-  },
-  full: {
-    label: "Lotado",
-    bg: "bg-[#FDEDEC]",
-    text: "text-[#E74C3C]",
-    dot: "bg-[#E74C3C]",
-    border: "border-[#E74C3C]/20",
-  },
+interface Question {
+  id: number;
+  question: string;
+  subtitle: string;
+  options: Option[];
 }
 
-function parseBackendStatus(statusStr: string): StatusLevel {
-  if (statusStr.includes("Vermelho")) return "full"
-  if (statusStr.includes("Amarelo")) return "attention"
-  return "normal"
+interface SubgenreResult {
+  title: string;
+  subtitle: string;
+  description: string;
+  emblem: string;
+  traits: string[];
+  authors: string;
 }
 
-// ── Triage steps ──────────────────────────────────────────────────────────────
-interface TriageStep {
-  id: number
-  question: string
-  hint: string
-  options: { label: string value: "yes" | "no" }[]
-}
+/* ─── Data ───────────────────────────────────────────────────────────────── */
 
-const triageSteps: TriageStep[] = [
+const questions: Question[] = [
   {
     id: 1,
-    question: "Você está sentindo dor no peito ou dificuldade para respirar?",
-    hint: "Pressão, aperto ou falta de ar súbita",
+    question: 'Onde sua jornada começa?',
+    subtitle: 'O ponto de partida revela muito sobre o destino',
     options: [
-      { label: "Sim", value: "yes" },
-      { label: "Não", value: "no" },
+      { text: 'Uma taverna barulhenta às margens do reino', icon: '🍺', subgenre: 'epic' },
+      { text: 'Um cemitério envolto em névoa ao cair da noite', icon: '🌙', subgenre: 'dark' },
+      { text: 'O metrô de uma cidade grande, cheio de segredos', icon: '🌆', subgenre: 'urban' },
+      { text: 'Um espelho antigo que te transporta para outro mundo', icon: '🪞', subgenre: 'portal' },
     ],
   },
   {
     id: 2,
-    question: "Seus sintomas começaram há menos de 24 horas?",
-    hint: "Ou pioraram rapidamente",
+    question: 'Qual é o seu maior dom?',
+    subtitle: 'O talento que te define entre todos os viajantes',
     options: [
-      { label: "Sim", value: "yes" },
-      { label: "Não", value: "no" },
+      { text: 'O amor que desafia destinos e profecias ancestrais', icon: '💫', subgenre: 'romantasy' },
+      { text: 'O conhecimento de tradições e rituais milenares', icon: '📜', subgenre: 'historical' },
+      { text: 'A coragem de liderar exércitos em batalhas épicas', icon: '⚔️', subgenre: 'epic' },
+      { text: 'O domínio sobre forças sombrias e proibidas', icon: '🖤', subgenre: 'dark' },
     ],
   },
   {
     id: 3,
-    question: "Você tem febre acima de 38,5 °C?",
-    hint: "Aferida com termômetro",
+    question: 'Quem caminha ao seu lado?',
+    subtitle: 'O companheiro escolhido é o espelho da sua alma',
     options: [
-      { label: "Sim", value: "yes" },
-      { label: "Não", value: "no" },
+      { text: 'Um demônio que selou um pacto contigo no passado', icon: '😈', subgenre: 'dark' },
+      { text: 'Um detetive sobrenatural que decifra os segredos da cidade', icon: '🔍', subgenre: 'urban' },
+      { text: 'Um príncipe ou princesa de um reino rival', icon: '👑', subgenre: 'romantasy' },
+      { text: 'Um cavaleiro de uma ordem esquecida pela história', icon: '🛡️', subgenre: 'historical' },
     ],
   },
   {
     id: 4,
-    question: "Você tem alguma condição crônica de saúde?",
-    hint: "Diabetes, hipertensão, cardiopatia, etc.",
+    question: 'O que mais te fascina em uma história?',
+    subtitle: 'O fio que te prende às páginas até o amanhecer',
     options: [
-      { label: "Sim", value: "yes" },
-      { label: "Não", value: "no" },
+      { text: 'A descoberta de um mundo completamente novo e maravilhoso', icon: '✨', subgenre: 'portal' },
+      { text: 'Batalhas épicas, reinos em guerra e profecias antigas', icon: '🏰', subgenre: 'epic' },
+      { text: 'A reconstrução de uma era histórica com magia entrelaçada', icon: '🕯️', subgenre: 'historical' },
+      { text: 'Criaturas sobrenaturais escondidas nas sombras do mundo real', icon: '🌃', subgenre: 'urban' },
     ],
   },
-]
+  {
+    id: 5,
+    question: 'Como você enfrenta o perigo?',
+    subtitle: 'A estratégia revela o seu verdadeiro caráter',
+    options: [
+      { text: 'Com feitiços proibidos e um coração despedaçado', icon: '💔', subgenre: 'dark' },
+      { text: 'Com a força do amor e uma aliança improvável', icon: '🌹', subgenre: 'romantasy' },
+      { text: 'Usando magia antiga aprendida de grimorios medievais', icon: '📖', subgenre: 'historical' },
+      { text: 'Atravessando portais para buscar aliados em outros mundos', icon: '🌀', subgenre: 'portal' },
+    ],
+  },
+  {
+    id: 6,
+    question: 'Qual artefato você escolheria?',
+    subtitle: 'O objeto que carregaria em sua jornada final',
+    options: [
+      { text: 'Uma espada lendária forjada sob estrelas divinas', icon: '🗡️', subgenre: 'epic' },
+      { text: 'Um grimório de feitiços das trevas mais profundas', icon: '📓', subgenre: 'dark' },
+      { text: 'Um amuleto que revela o invisível nas ruas da cidade', icon: '🔮', subgenre: 'urban' },
+      { text: 'Um mapa que conduz a reinos além das estrelas', icon: '🗺️', subgenre: 'portal' },
+    ],
+  },
+];
 
-type Recommendation = "ubs_urgent" | "ubs"
+const subgenreResults: Record<Subgenre, SubgenreResult> = {
+  epic: {
+    title: 'Alta Fantasia Épica',
+    subtitle: 'Reinos Imortais & Profecias das Eras',
+    description:
+      'Sua alma pulsa com o ritmo das batalhas eternas. Você é feito de lendas e estrelas — do tipo que sobrevive a guerras, ergue impérios e reescreve profecias. Os grandes mapas do mundo chamam seu nome, e dragões dobram seus pescoços para ouvi-lo. A Jornada do Herói é o seu ritmo cardíaco; o sacrifício pelo bem maior, a sua religião.',
+    emblem: '🏰',
+    traits: ['Grandioso', 'Épico', 'Mitológico', 'Profético'],
+    authors: 'Tolkien · Sanderson · George R.R. Martin',
+  },
+  dark: {
+    title: 'Fantasia Sombria',
+    subtitle: 'Fronteiras entre o Crepúsculo e o Abismo',
+    description:
+      'As trevas não te assustam — elas te fascinam. Você caminha nas bordas do mundo, onde a magia corrói a sanidade e os heróis pagam preços sangrentos por cada vitória. A beleza e o horror coexistem em você como gêmeos inseparáveis. Você prefere verdades cruéis a mentiras confortáveis, e isso te torna extraordinário.',
+    emblem: '🌑',
+    traits: ['Sombrio', 'Visceral', 'Filosófico', 'Complexo'],
+    authors: 'Joe Abercrombie · V.E. Schwab · Patrick Rothfuss',
+  },
+  urban: {
+    title: 'Fantasia Urbana',
+    subtitle: 'Ruas Encantadas de Metrópoles Secretas',
+    description:
+      'Você enxerga o que os outros ignoram — a magia escondida nos becos da cidade, os fae disfarçados de mendigos, os vampiros nos mesmos cafés que você. Seu mundo tem duas camadas: o mundano e o sobrenatural, e você habita ambas com igual conforto e uma ironia que encanta.',
+    emblem: '🌃',
+    traits: ['Contemporâneo', 'Misterioso', 'Dualista', 'Perspicaz'],
+    authors: 'Neil Gaiman · Cassandra Clare · Jim Butcher',
+  },
+  romantasy: {
+    title: 'Romantasy',
+    subtitle: 'Reinos onde o Amor é a Maior das Magias',
+    description:
+      'Para você, nenhuma batalha épica supera a tensão de dois corações destinados que resistem ao destino. Você lê nas entrelinhas entre o poder e o desejo, no olhar que diz mais do que qualquer profecia. Cortes fae, príncipes inacessíveis e amores impossíveis são o seu alimento espiritual.',
+    emblem: '🌹',
+    traits: ['Apaixonado', 'Intenso', 'Mágico', 'Emotivo'],
+    authors: 'Sarah J. Maas · Rebecca Yarros · Holly Black',
+  },
+  historical: {
+    title: 'Fantasia Histórica',
+    subtitle: 'Eras Perdidas onde a Magia Moldou a História',
+    description:
+      'Você sente o cheiro de pergaminhos antigos e escuta o sussurro de civilizações esquecidas. A magia, para você, está enraizada na história — nos rituais da Roma Antiga, nas feiticeiras medievais, nos alquimistas do Renascimento. Você estuda o passado para compreender o presente encantado.',
+    emblem: '🕯️',
+    traits: ['Histórico', 'Ritualístico', 'Atmosférico', 'Erudito'],
+    authors: 'Susanna Clarke · Naomi Novik · Guy Gavriel Kay',
+  },
+  portal: {
+    title: 'Fantasia de Portal',
+    subtitle: 'Além — nos Mundos do Outro Lado do Espelho',
+    description:
+      'Você sempre olhou para espelhos, armários e fontes antigas com uma pergunta nos olhos: e se? Sua fantasia favorita começa quando um ser ordinário atravessa o limiar do impossível e descobre ser extraordinário. A maravilha da descoberta e a reinvenção de si mesmo em um mundo novo alimentam a sua imaginação.',
+    emblem: '🌀',
+    traits: ['Maravilhoso', 'Transformador', 'Descoberta', 'Reinvenção'],
+    authors: 'C.S. Lewis · Lev Grossman · Seanan McGuire',
+  },
+};
 
-function getRecommendation(answers: ("yes" | "no")[]): Recommendation {
-  // answers[0] = Resposta da Pergunta 1
-  // answers[2] = Resposta da Pergunta 3
-  const urgentFlags = [answers[0] === "yes", answers[2] === "yes"]
-  return urgentFlags.some(Boolean) ? "ubs_urgent" : "ubs"
+function calculateResult(answers: Subgenre[]): Subgenre {
+  const scores: Record<Subgenre, number> = {
+    epic: 0, dark: 0, urban: 0, romantasy: 0, historical: 0, portal: 0,
+  };
+  answers.forEach(a => scores[a]++);
+  return Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0] as Subgenre;
 }
 
-// ── Icons ─────────────────────────────────────────────────────────────────────
-function IconMapPin({ className = "" }: { className?: string }) {
+/* ─── SVG Ornaments ─────────────────────────────────────────────────────── */
+
+function Filigrana({ flip = false }: { flip?: boolean }) {
   return (
     <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      viewBox="0 0 420 56"
+      style={{ width: '100%', maxWidth: '350px', margin: '0 auto', transform: flip ? 'scaleY(-1)' : undefined, display: 'block' }}
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-      <circle cx="12" cy="10" r="3" />
+      <g stroke="#D4AF37" strokeWidth="0.8" fill="none">
+        <line x1="0" y1="28" x2="148" y2="28" />
+        <line x1="272" y1="28" x2="420" y2="28" />
+        <circle cx="210" cy="28" r="22" />
+        <circle cx="210" cy="28" r="15" />
+        <circle cx="210" cy="28" r="5" fill="#D4AF37" />
+        <polyline points="148,28 180,8 210,8 240,8 272,28" />
+        <polyline points="148,28 180,48 210,48 240,48 272,28" />
+        <circle cx="148" cy="28" r="4" fill="#D4AF37" />
+        <circle cx="272" cy="28" r="4" fill="#D4AF37" />
+      </g>
     </svg>
-  )
+  );
 }
 
-function IconSearch({ className = "" }: { className?: string }) {
+function WaxSeal({ letter = 'RM', size = 60 }: { letter?: string; size?: number }) {
+  const r = size / 2;
   return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.35-4.35" />
-    </svg>
-  )
-}
-
-function IconNavigation({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polygon points="3 11 22 2 13 21 11 13 3 11" />
-    </svg>
-  )
-}
-
-function IconClock({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  )
-}
-
-function IconChevronRight({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
-  )
-}
-
-function IconActivity({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-    </svg>
-  )
-}
-
-function IconCheck({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  )
-}
-
-function IconAlertTriangle({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-      <line x1="12" y1="9" x2="12" y2="13" />
-      <line x1="12" y1="17" x2="12.01" y2="17" />
-    </svg>
-  )
-}
-
-function IconHospital({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 6v4" />
-      <path d="M14 14h-4" />
-      <path d="M14 18h-4" />
-      <path d="M14 8h-4" />
-      <path d="M18 12h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2" />
-      <path d="M18 22V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v18" />
-    </svg>
-  )
-}
-
-function MapPlaceholder() {
-  return (
-    <div className="relative w-full h-full bg-[#EEF1F5] overflow-hidden">
-      <svg
-        className="absolute inset-0 w-full h-full opacity-40"
-        xmlns="http://www.w3.org/2000/svg"
+    <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size}>
+      <circle cx={r} cy={r} r={r - 2} fill="#560319" stroke="#D4AF37" strokeWidth="1.5" />
+      <circle cx={r} cy={r} r={r - 8} fill="none" stroke="#D4AF37" strokeWidth="0.5" />
+      <text
+        x="50%"
+        y="54%"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fill="#D4AF37"
+        fontSize={size * 0.35}
+        fontFamily="Georgia, serif"
+        fontStyle="italic"
+        fontWeight="bold"
       >
-        <defs>
-          <pattern
-            id="grid"
-            width="40"
-            height="40"
-            patternUnits="userSpaceOnUse"
-          >
-            <path
-              d="M 40 0 L 0 0 0 40"
-              fill="none"
-              stroke="#C8CDD6"
-              strokeWidth="1"
-            />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
-      </svg>
-      <div className="absolute bottom-2 right-3 text-[10px] text-[#9EA5B0] font-medium">
-        Carapicuíba - SP
-      </div>
-    </div>
-  )
+        {letter}
+      </text>
+    </svg>
+  );
 }
 
-// ── Screen: Home ──────────────────────────────────────────────────────────────
-function HomeScreen({ onTriageOpen }: { onTriageOpen: () => void }) {
-  const [search, setSearch] = useState("")
-  const [selectedId, setSelectedId] = useState<number | null>(null)
-  const [hospitals, setHospitals] = useState<Hospital[]>([])
-  const [loading, setLoading] = useState(true)
-  const [errorMsg, setErrorMsg] = useState("")
+/* ─── Diamond Button ─────────────────────────────────────────────────────── */
 
-  useEffect(() => {
-    fetch("https://app-saude2-1.onrender.com/hospitais")
-      .then((res) => {
-        if (!res.ok) throw new Error("Erro ao carregar dados do servidor")
-        return res.json()
-      })
-      .then((data) => {
-        const formatted = data.map((item: any) => ({
-          id: item.id,
-          name: item.nome,
-          type: "Pronto Atendimento",
-          distance: "1.2 km",
-          status: parseBackendStatus(item.status),
-          waitMin: item.tempo_espera,
-          address: "Carapicuíba - SP",
-        }))
-        setHospitals(formatted)
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.error("Erro:", err)
-        setErrorMsg("Servidor a iniciar (aguarde alguns segundos)...")
-        setLoading(false)
-      })
-  }, [])
+type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 
-  const filtered = hospitals.filter(
-    (h) =>
-      h.name.toLowerCase().includes(search.toLowerCase()) ||
-      h.type.toLowerCase().includes(search.toLowerCase()),
-  )
+const VARIANT_STYLES: Record<ButtonVariant, { bg: string; color: string; shadow: string }> = {
+  primary: { bg: '#560319', color: '#F5F3E7', shadow: '0 4px 20px rgba(86,3,25,0.4)' },
+  secondary: { bg: '#4B5320', color: '#F5F3E7', shadow: '0 4px 20px rgba(75,83,32,0.4)' },
+  ghost: { bg: 'transparent', color: '#D4AF37', shadow: 'none' },
+};
 
-  return (
-    <div className="flex flex-col h-full bg-[#F7F8FA]">
-      <div className="bg-[#1A6FBF] px-5 pt-4 pb-0">
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <p className="text-[#A8C8ED] text-xs font-medium tracking-wide uppercase">
-              Localização atual
-            </p>
-            <div className="flex items-center gap-1 mt-0.5">
-              <IconMapPin className="w-3.5 h-3.5 text-white" />
-              <span className="text-white text-sm font-semibold">
-                Carapicuíba, São Paulo
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={onTriageOpen}
-            className="flex items-center gap-1.5 bg-white/15 hover:bg-white/25 transition-colors rounded-2xl px-3 py-2"
-          >
-            <IconActivity className="w-3.5 h-3.5 text-white" />
-            <span className="text-white text-xs font-semibold">Triagem</span>
-          </button>
-        </div>
-
-        <div className="relative mb-4">
-          <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9EA5B0]" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar hospital em Carapicuíba..."
-            className="w-full bg-white rounded-2xl pl-10 pr-4 py-3 text-sm text-[#1A1D23] placeholder:text-[#9EA5B0] outline-none shadow-sm font-medium"
-          />
-        </div>
-      </div>
-
-      <div className="h-44 relative flex-shrink-0 shadow-sm">
-        <MapPlaceholder />
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#F7F8FA] to-transparent" />
-      </div>
-
-      <div className="flex items-center justify-between px-5 pt-3 pb-2">
-        <p className="text-[#1A1D23] text-sm font-bold">
-          {loading
-            ? "A carregar do Python..."
-            : `${filtered.length} unidades em tempo real`}
-        </p>
-        <div className="flex items-center gap-1.5">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#27AE60] animate-pulse" />
-          <span className="text-[#5A6170] text-xs font-medium">
-            Conectado ao Render
-          </span>
-        </div>
-      </div>
-
-      {errorMsg && (
-        <div className="mx-4 mb-2 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-700 text-center font-medium">
-          {errorMsg}
-        </div>
-      )}
-
-      <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3">
-        {filtered.map((h) => {
-          const s = statusConfig[h.status]
-          const isSelected = selectedId === h.id
-          return (
-            <button
-              key={h.id}
-              onClick={() => setSelectedId(isSelected ? null : h.id)}
-              className={`w-full text-left bg-white rounded-3xl p-4 shadow-sm border transition-all duration-200 ${
-                isSelected
-                  ? "border-[#1A6FBF] shadow-[#1A6FBF]/10 shadow-md"
-                  : "border-[#E8EAED] hover:border-[#C5D8EE] hover:shadow-md"
-              }`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-[#EBF4FF] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <IconHospital className="w-5 h-5 text-[#1A6FBF]" />
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="text-[#1A1D23] text-[15px] font-bold leading-tight truncate">
-                        {h.name}
-                      </p>
-                      <p className="text-[#9EA5B0] text-xs mt-0.5 font-medium">
-                        {h.type}
-                      </p>
-                    </div>
-                    <div
-                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border flex-shrink-0 ${s.bg} ${s.border}`}
-                    >
-                      <div className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-                      <span className={`text-xs font-bold ${s.text}`}>
-                        {s.label}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 mt-2.5">
-                    <div className="flex items-center gap-1">
-                      <IconMapPin className="w-3.5 h-3.5 text-[#9EA5B0]" />
-                      <span className="text-[#5A6170] text-xs font-semibold">
-                        {h.distance}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <IconClock className="w-3.5 h-3.5 text-[#9EA5B0]" />
-                      <span className="text-[#5A6170] text-xs font-semibold">
-                        ~{h.waitMin} min de espera
-                      </span>
-                    </div>
-                  </div>
-
-                  {isSelected && (
-                    <div className="mt-3 pt-3 border-t border-[#E8EAED]">
-                      <p className="text-[#9EA5B0] text-xs mb-3">{h.address}</p>
-                      <button className="w-full flex items-center justify-center gap-2 bg-[#1A6FBF] hover:bg-[#0F4A8A] transition-colors rounded-2xl py-3 px-4">
-                        <IconNavigation className="w-4 h-4 text-white" />
-                        <span className="text-white text-sm font-bold">
-                          Ver Rota no GPS
-                        </span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </button>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-// ── Screen: Triage ────────────────────────────────────────────────────────────
-function TriageScreen({ onBack }: { onBack: () => void }) {
-  const [step, setStep] = useState(0)
-  const [answers, setAnswers] = useState<("yes" | "no")[]>([])
-
-  const handleAnswer = (value: "yes" | "no") => {
-    const newAnswers = [...answers, value]
-    setAnswers(newAnswers)
-    // Avança para a próxima pergunta até terminar o fluxo
-    setStep(step + 1)
-  }
-
-  const restart = () => {
-    setStep(0)
-    setAnswers([])
-  }
-
-  const questionStep = step >= 1 && step <= triageSteps.length
-  const isDone = step > triageSteps.length
-  const recommendation = isDone ? getRecommendation(answers) : null
-  const currentQuestion = questionStep ? triageSteps[step - 1] : null
-
-  return (
-    <div className="flex flex-col h-full bg-[#F7F8FA]">
-      <div className="bg-[#1A6FBF] px-5 pt-4 pb-5">
-        <div className="flex items-center gap-3 mb-4">
-          <button
-            onClick={onBack}
-            className="w-9 h-9 rounded-2xl bg-white/15 hover:bg-white/25 transition-colors flex items-center justify-center"
-          >
-            <svg
-              className="w-4 h-4 text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
-          <div>
-            <p className="text-white text-base font-bold leading-tight">
-              Triagem Rápida
-            </p>
-            <p className="text-[#A8C8ED] text-xs font-medium">
-              Orientação de cuidado
-            </p>
-          </div>
-        </div>
-
-        {!isDone && (
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-[#A8C8ED] text-xs font-medium">
-              <span>
-                {step === 0
-                  ? "Início"
-                  : `Pergunta ${step} de ${triageSteps.length}`}
-              </span>
-              <span>{Math.round((step / triageSteps.length) * 100)}%</span>
-            </div>
-            <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-white rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${(step / triageSteps.length) * 100}%` }}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="flex-1 overflow-y-auto px-5 py-6">
-        {step === 0 && (
-          <div className="flex flex-col h-full">
-            <div className="flex-1 flex flex-col items-center justify-center text-center gap-5">
-              <div className="w-20 h-20 rounded-3xl bg-[#EBF4FF] flex items-center justify-center">
-                <IconActivity className="w-10 h-10 text-[#1A6FBF]" />
-              </div>
-              <div>
-                <h2 className="text-[#1A1D23] text-xl font-bold leading-tight">
-                  Como você está se sentindo?
-                </h2>
-                <p className="text-[#5A6170] text-sm mt-2 leading-relaxed max-w-xs mx-auto">
-                  Responda às perguntas para saber se deve procurar um
-                  Pronto-Socorro imediatamente ou a UBS mais próxima.
-                </p>
-              </div>
-              <div className="bg-[#FEF9E7] border border-[#F39C12]/20 rounded-2xl p-4 w-full text-left">
-                <div className="flex gap-3">
-                  <IconAlertTriangle className="w-5 h-5 text-[#F39C12] flex-shrink-0 mt-0.5" />
-                  <p className="text-[#5A6170] text-sm leading-relaxed">
-                    Sintomas indicando dor no peito ou febre alta resultarão no{" "}
-                    <strong className="text-[#1A1D23]">
-                      encaminhamento para uma UBS
-                    </strong>{" "}
-                    ao final desta triagem.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <button
-              onClick={() => setStep(1)}
-              className="w-full bg-[#1A6FBF] hover:bg-[#0F4A8A] transition-colors rounded-2xl py-4 text-white text-base font-bold mt-6 flex items-center justify-center gap-2"
-            >
-              Iniciar Triagem
-              <IconChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        )}
-
-        {questionStep && currentQuestion && (
-          <div className="flex flex-col h-full">
-            <div className="flex-1 flex flex-col justify-center gap-6">
-              <div className="bg-white rounded-3xl p-6 border border-[#E8EAED] shadow-sm">
-                <div className="w-12 h-12 rounded-2xl bg-[#EBF4FF] flex items-center justify-center mb-4">
-                  <span className="text-[#1A6FBF] text-lg font-black">
-                    {step}
-                  </span>
-                </div>
-                <h3 className="text-[#1A1D23] text-lg font-bold leading-snug">
-                  {currentQuestion.question}
-                </h3>
-                {currentQuestion.hint && (
-                  <p className="text-[#9EA5B0] text-sm mt-2 leading-relaxed">
-                    {currentQuestion.hint}
-                  </p>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                <button
-                  onClick={() => handleAnswer("yes")}
-                  className="w-full bg-white hover:bg-[#EBF4FF] border border-[#E8EAED] transition-all rounded-2xl py-4 px-5 flex items-center justify-between group"
-                >
-                  <span className="text-[#1A1D23] text-base font-semibold">
-                    Sim
-                  </span>
-                  <div className="w-7 h-7 rounded-full border-2 border-[#E8EAED] group-hover:border-[#1A6FBF] group-hover:bg-[#1A6FBF] transition-all flex items-center justify-center">
-                    <IconCheck className="w-3.5 h-3.5 text-transparent group-hover:text-white" />
-                  </div>
-                </button>
-                <button
-                  onClick={() => handleAnswer("no")}
-                  className="w-full bg-white hover:bg-[#EBF4FF] border border-[#E8EAED] transition-all rounded-2xl py-4 px-5 flex items-center justify-between group"
-                >
-                  <span className="text-[#1A1D23] text-base font-semibold">
-                    Não
-                  </span>
-                  <div className="w-7 h-7 rounded-full border-2 border-[#E8EAED] group-hover:border-[#1A6FBF] group-hover:bg-[#1A6FBF] transition-all flex items-center justify-center" />
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {isDone && recommendation && (
-          <div className="flex flex-col h-full">
-            <div className="flex-1 flex flex-col items-center justify-center gap-6 text-center">
-              {recommendation === "ubs_urgent" ? (
-                <>
-                  <div className="w-24 h-24 rounded-3xl bg-[#FDEDEC] flex items-center justify-center animate-bounce">
-                    <IconAlertTriangle className="w-12 h-12 text-[#E74C3C]" />
-                  </div>
-                  <div>
-                    <div className="inline-block bg-[#FDEDEC] text-[#E74C3C] text-xs font-extrabold px-3 py-1 rounded-full mb-2 uppercase tracking-wider">
-                      Atenção
-                    </div>
-                    <h2 className="text-[#1A1D23] text-xl font-bold">
-                      Encaminhe-se a uma UBS
-                    </h2>
-                    <p className="text-[#5A6170] text-sm mt-2 leading-relaxed max-w-xs mx-auto">
-                      O seu sintoma exige avaliação médica. Por favor, dirija-se
-                      imediatamente à Unidade Básica de Saúde (UBS) mais
-                      próxima.
-                    </p>
-                  </div>
-                  <button
-                    onClick={onBack}
-                    className="w-full bg-[#E74C3C] hover:bg-[#C0392B] transition-colors rounded-2xl py-4 text-white text-base font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#E74C3C]/30"
-                  >
-                    <IconMapPin className="w-5 h-5 text-white" />
-                    Ver UBS Próximas no Mapa
-                  </button>
-                </>
-              ) : (
-                <>
-                  <div className="w-24 h-24 rounded-3xl bg-[#E8F8EF] flex items-center justify-center shadow-sm">
-                    <IconHospital className="w-12 h-12 text-[#27AE60]" />
-                  </div>
-                  <div>
-                    <div className="inline-block bg-[#E8F8EF] text-[#27AE60] text-xs font-extrabold px-3 py-1 rounded-full mb-2 uppercase tracking-wider">
-                      Atendimento Recomendado
-                    </div>
-                    <h2 className="text-[#1A1D23] text-xl font-bold">
-                      Buscar a UBS mais perto de você
-                    </h2>
-                    <p className="text-[#5A6170] text-sm mt-2 leading-relaxed max-w-xs mx-auto">
-                      Como não foram detetados sinais de urgência grave, procure
-                      a Unidade Básica de Saúde (UBS) mais próxima para
-                      atendimento de rotina com segurança.
-                    </p>
-                  </div>
-                  <button
-                    onClick={onBack}
-                    className="w-full bg-[#27AE60] hover:bg-[#1E8449] transition-colors rounded-2xl py-4 text-white text-base font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#27AE60]/30"
-                  >
-                    <IconMapPin className="w-5 h-5 text-white" />
-                    Ver UBS Próxima no Mapa
-                  </button>
-                </>
-              )}
-              <button
-                onClick={restart}
-                className="text-[#9EA5B0] text-sm font-medium underline"
-              >
-                Refazer a triagem
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-// ── Bottom nav ─────────────────────────────────────────────────────────────────
-function BottomNav({
-  active,
-  onChange,
+function DiamondButton({
+  children,
+  onClick,
+  variant = 'primary',
+  disabled = false,
+  wide = false,
 }: {
-  active: Screen
-  onChange: (s: Screen) => void
+  children: React.ReactNode;
+  onClick?: () => void;
+  variant?: ButtonVariant;
+  disabled?: boolean;
+  wide?: boolean;
 }) {
+  const s = VARIANT_STYLES[variant];
   return (
-    <div className="flex-shrink-0 bg-white border-t border-[#E8EAED] px-2 pt-2 pb-4">
-      <div className="flex">
-        <button
-          onClick={() => onChange("home")}
-          className={`flex-1 flex flex-col items-center gap-1 py-2 rounded-2xl transition-colors ${
-            active === "home" ? "text-[#1A6FBF]" : "text-[#9EA5B0]"
-          }`}
-        >
-          <IconMapPin className="w-5 h-5" />
-          <span className="text-[10px] font-semibold tracking-wide">Mapa</span>
-        </button>
-        <button
-          onClick={() => onChange("triage")}
-          className={`flex-1 flex flex-col items-center gap-1 py-2 rounded-2xl transition-colors ${
-            active === "triage" ? "text-[#1A6FBF]" : "text-[#9EA5B0]"
-          }`}
-        >
-          <IconActivity className="w-5 h-5" />
-          <span className="text-[10px] font-semibold tracking-wide">
-            Triagem
-          </span>
-        </button>
-      </div>
-    </div>
-  )
+    <button
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+      style={{
+        position: 'relative',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: s.bg,
+        color: s.color,
+        fontFamily: "Georgia, serif",
+        fontSize: '1rem',
+        fontWeight: 600,
+        letterSpacing: '0.12em',
+        padding: '12px 36px',
+        minWidth: wide ? '220px' : '180px',
+        clipPath: 'polygon(16px 0%, calc(100% - 16px) 0%, 100% 50%, calc(100% - 16px) 100%, 16px 100%, 0% 50%)',
+        border: '1px solid #D4AF37',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.45 : 1,
+        transition: 'transform 0.2s ease, opacity 0.2s ease',
+        boxShadow: disabled ? 'none' : s.shadow,
+      }}
+    >
+      {children}
+    </button>
+  );
 }
 
-// ── App shell ─────────────────────────────────────────────────────────────────
-export default function App() {
-  const [screen, setScreen] = useState<Screen>("home")
+function CornerBrackets() {
+  const b = '1.5px solid #D4AF37';
+  const s = '15px';
+  return (
+    <>
+      <span style={{ position: 'absolute', top: 10, left: 10, width: s, height: s, borderTop: b, borderLeft: b }} />
+      <span style={{ position: 'absolute', top: 10, right: 10, width: s, height: s, borderTop: b, borderRight: b }} />
+      <span style={{ position: 'absolute', bottom: 10, left: 10, width: s, height: s, borderBottom: b, borderLeft: b }} />
+      <span style={{ position: 'absolute', bottom: 10, right: 10, width: s, height: s, borderBottom: b, borderRight: b }} />
+    </>
+  );
+}
 
+function GoldDivider({ glyph = '✦' }: { glyph?: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '1rem 0' }}>
+      <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, #D4AF37)' }} />
+      <span style={{ color: '#D4AF37', fontSize: '0.9rem' }}>{glyph}</span>
+      <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, #D4AF37)' }} />
+    </div>
+  );
+}
+
+function ParchmentCard({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <div
-      className="size-full flex items-center justify-center bg-[#CBD5E1] p-4"
-      style={{ fontFamily: "'Outfit', sans-serif" }}
+      style={{
+        position: 'relative',
+        background: 'linear-gradient(145deg, #f5edcf 0%, #ede2be 35%, #f2e8cc 65%, #e9ddb9 100%)',
+        border: '1px solid rgba(212,175,55,0.6)',
+        boxShadow: '0 12px 48px rgba(0,0,0,0.2), inset 0 0 40px rgba(139,110,50,0.1)',
+        padding: '2.5rem 2rem',
+        ...style,
+      }}
     >
-      <div
-        className="relative flex flex-col bg-white overflow-hidden shadow-2xl"
-        style={{ width: 375, height: 720, borderRadius: 40 }}
-      >
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10 w-28 h-7 bg-[#1A6FBF] rounded-b-2xl flex items-center justify-center gap-1.5">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#0F4A8A]/60" />
-          <div className="w-10 h-1 bg-[#0F4A8A]/40 rounded-full" />
-        </div>
-
-        <div className="flex-1 flex flex-col overflow-hidden mt-7">
-          {screen === "home" && (
-            <HomeScreen onTriageOpen={() => setScreen("triage")} />
-          )}
-          {screen === "triage" && (
-            <TriageScreen onBack={() => setScreen("home")} />
-          )}
-        </div>
-
-        <BottomNav active={screen} onChange={setScreen} />
-      </div>
+      <CornerBrackets />
+      {children}
     </div>
-  )
+  );
+}
+
+function Header() {
+  return (
+    <header style={{ background: '#F5F3E7', borderBottom: '1px solid rgba(212,175,55,0.4)', padding: '1rem' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+        <WaxSeal letter="RM" size={50} />
+        <h1 style={{ fontFamily: "Georgia, serif", color: '#333', fontSize: '1.5rem', margin: 0 }}>O Reino Mágico</h1>
+      </div>
+    </header>
+  );
+}
+
+function HeroSection({ onStart }: { onStart: () => void }) {
+  return (
+    <main style={{ background: 'linear-gradient(158deg, #130609 0%, #0e1808 45%, #140f04 100%)', minHeight: 'calc(100vh - 90px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <ParchmentCard style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
+        <Filigrana />
+        <h2 style={{ fontFamily: "Georgia, serif", color: '#560319', fontSize: '2.2rem', margin: '1rem 0' }}>Qual é o seu Subgênero de Fantasia?</h2>
+        <GoldDivider />
+        <p style={{ fontFamily: "Georgia, serif", fontStyle: 'italic', color: '#333', fontSize: '1.1rem', margin: '1.5rem 0' }}>
+          Responda a 6 perguntas e descubra a qual mundo literário você pertence.
+        </p>
+        <Filigrana flip />
+        <div style={{ marginTop: '1.5rem' }}>
+          <DiamondButton onClick={onStart} variant="primary" wide>Iniciar Jornada</DiamondButton>
+        </div>
+      </ParchmentCard>
+    </main>
+  );
+}
+
+function QuizSection({ question, questionIndex, total, selected, onSelect, onNext }: any) {
+  const isLast = questionIndex === total - 1;
+  const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
+
+  return (
+    <main style={{ background: '#F5F3E7', minHeight: 'calc(100vh - 90px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <div style={{ maxWidth: '600px', width: '100%' }}>
+        <p style={{ textAlign: 'center', color: '#560319', fontSize: '0.8rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+          Pergunta {questionIndex + 1} de {total}
+        </p>
+        <ParchmentCard>
+          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+            <h2 style={{ fontFamily: "Georgia, serif", color: '#333', fontSize: '1.8rem', margin: 0 }}>{question.question}</h2>
+            <p style={{ fontStyle: 'italic', color: '#7a6a4e', fontSize: '0.9rem' }}>{question.subtitle}</p>
+            <GoldDivider glyph="◆" />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {question.options.map((opt: any, idx: number) => {
+              const isSelected = selected === opt.subgenre;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => onSelect(opt.subgenre)}
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '12px 16px',
+                    background: isSelected ? '#4B5320' : 'rgba(255,255,255,0.4)',
+                    border: '1px solid #D4AF37',
+                    cursor: 'pointer',
+                    color: isSelected ? '#F5F3E7' : '#333',
+                    fontFamily: "Georgia, serif",
+                    fontSize: '1rem',
+                  }}
+                >
+                  <span style={{ fontWeight: 'bold' }}>{OPTION_LETTERS[idx]}.</span>
+                  <span>{opt.icon}</span>
+                  <span style={{ fontStyle: 'italic' }}>{opt.text}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+            <DiamondButton onClick={onNext} variant="secondary" disabled={!selected}>
+              {isLast ? 'Revelar Destino' : 'Próxima Pergunta'}
+            </DiamondButton>
+          </div>
+        </ParchmentCard>
+      </div>
+    </main>
+  );
+}
+
+function ResultSection({ result, onReset }: any) {
+  return (
+    <main style={{ background: 'linear-gradient(158deg, #130609 0%, #0c1507 45%, #13100a 100%)', minHeight: 'calc(100vh - 90px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <ParchmentCard style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
+        <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>{result.emblem}</div>
+        <Filigrana />
+        <h2 style={{ fontFamily: "Georgia, serif", color: '#560319', fontSize: '2.5rem', margin: '0.5rem 0' }}>{result.title}</h2>
+        <p style={{ fontStyle: 'italic', color: '#560319', marginBottom: '1rem' }}>{result.subtitle}</p>
+        <GoldDivider glyph="◆ ◆ ◆" />
+        <p style={{ fontStyle: 'italic', color: '#333', lineHeight: '1.6', textAlign: 'left', margin: '1rem 0' }}>{result.description}</p>
+        <p style={{ fontSize: '0.85rem', color: '#7a6a4e', margin: '1.5rem 0' }}>Autores de referência: {result.authors}</p>
+        <Filigrana flip />
+        <div style={{ marginTop: '1.5rem' }}>
+          <DiamondButton onClick={onReset} variant="primary">Refazer o Quiz</DiamondButton>
+        </div>
+      </ParchmentCard>
+    </main>
+  );
+}
+
+export default function App() {
+  const [screen, setScreen] = useState<Screen>('hero');
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Subgenre[]>([]);
+  const [selected, setSelected] = useState<Subgenre | null>(null);
+  const [result, setResult] = useState<SubgenreResult | null>(null);
+
+  function startQuiz() {
+    setScreen('quiz');
+    setQuestionIndex(0);
+    setAnswers([]);
+    setSelected(null);
+  }
+
+  function handleNext() {
+    if (!selected) return;
+    const updated = [...answers, selected];
+
+    if (questionIndex < questions.length - 1) {
+      setAnswers(updated);
+      setQuestionIndex(i => i + 1);
+      setSelected(null);
+    } else {
+      const winner = calculateResult(updated);
+      setResult(subgenreResults[winner]);
+      setScreen('result');
+    }
+  }
+
+  function resetQuiz() {
+    setScreen('hero');
+    setQuestionIndex(0);
+    setAnswers([]);
+    setSelected(null);
+    setResult(null);
+  }
+
+  return (
+    <div style={{ minHeight: '100vh', background: '#F5F3E7' }}>
+      <Header />
+      {screen === 'hero' && <HeroSection onStart={startQuiz} />}
+      {screen === 'quiz' && (
+        <QuizSection
+          question={questions[questionIndex]}
+          questionIndex={questionIndex}
+          total={questions.length}
+          selected={selected}
+          onSelect={setSelected}
+          onNext={handleNext}
+        />
+      )}
+      {screen === 'result' && result && <ResultSection result={result} onReset={resetQuiz} />}
+    </div>
+  );
 }
