@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 // Imports das capas de imagens
 import capaCorte from './assets/corte.png';
@@ -36,14 +36,6 @@ interface SubgenreResult {
   bookSynopsis: string;
   bookCover: string;
   authors: string;
-}
-
-interface QuizSubmission {
-  id: string;
-  name: string;
-  email: string;
-  subgenreResult: string;
-  date: string;
 }
 
 /* ─── Data ───────────────────────────────────────────────────────────────── */
@@ -314,9 +306,9 @@ function ParchmentCard({ children, style = {} }: { children: React.ReactNode; st
   );
 }
 
-function HeroSection({ onStart, onExport }: { onStart: () => void; onExport: () => void }) {
+function HeroSection({ onStart }: { onStart: () => void }) {
   return (
-    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
       <ParchmentCard style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
         <Filigrana />
         <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2.4rem', margin: '1.2rem 0', textShadow: '0 2px 10px rgba(212,175,55,0.4)' }}>
@@ -327,27 +319,21 @@ function HeroSection({ onStart, onExport }: { onStart: () => void; onExport: () 
           Responda a 6 perguntas sob o véu do mistério e descubra a qual mundo literário a sua alma pertence.
         </p>
         <Filigrana flip />
-        <div style={{ marginTop: '1.8rem', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+        <div style={{ marginTop: '1.8rem' }}>
           <DiamondButton onClick={onStart} variant="primary" wide>Iniciar Jornada</DiamondButton>
-          <button 
-            onClick={onExport}
-            style={{ background: 'transparent', border: 'none', color: '#D4AF37', fontStyle: 'italic', cursor: 'pointer', fontSize: '0.85rem', textDecoration: 'underline', marginTop: '10px' }}
-          >
-            📥 Baixar Relatório de Respostas (CSV)
-          </button>
         </div>
       </ParchmentCard>
     </main>
   );
 }
 
-function DiagnosticSection({ onSubmit }: { onSubmit: (name: string, email: string) => void }) {
+function DiagnosticSection({ onSubmit, isSubmitting }: { onSubmit: (name: string, email: string) => void; isSubmitting: boolean }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim()) return;
+    if (!name.trim() || !email.trim() || isSubmitting) return;
     onSubmit(name, email);
   };
 
@@ -371,6 +357,7 @@ function DiagnosticSection({ onSubmit }: { onSubmit: (name: string, email: strin
               value={name} 
               onChange={e => setName(e.target.value)} 
               required
+              disabled={isSubmitting}
               placeholder="O seu nome..."
               style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
             />
@@ -378,16 +365,19 @@ function DiagnosticSection({ onSubmit }: { onSubmit: (name: string, email: strin
           <div>
             <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>E-mail:</label>
             <input 
-              type="emailn" 
+              type="email" 
               value={email} 
               onChange={e => setEmail(e.target.value)} 
               required
+              disabled={isSubmitting}
               placeholder="O seu e-mail..."
               style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
             />
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
-            <DiamondButton type="submit" variant="primary" wide>Revelar Destino</DiamondButton>
+            <DiamondButton type="submit" variant="primary" wide disabled={isSubmitting}>
+              {isSubmitting ? 'Registando...' : 'Revelar Destino'}
+            </DiamondButton>
           </div>
         </form>
       </ParchmentCard>
@@ -509,6 +499,7 @@ export default function App() {
   const [selected, setSelected] = useState<Subgenre | null>(null);
   const [result, setResult] = useState<SubgenreResult | null>(null);
   const [pendingWinner, setPendingWinner] = useState<Subgenre | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -539,51 +530,38 @@ export default function App() {
     } else {
       const winner = calculateResult(updated);
       setPendingWinner(winner);
-      setScreen('diagnostic'); // Vai para a tela de recolha de dados antes do resultado
+      setScreen('diagnostic');
     }
   }
 
-  function handleDiagnosticSubmit(name: string, email: string) {
-    if (!pendingWinner) return;
+  async function handleDiagnosticSubmit(name: string, email: string) {
+    if (!pendingWinner || isSubmitting) return;
 
+    setIsSubmitting(true);
     const winnerResult = subgenreResults[pendingWinner];
-    setResult(winnerResult);
 
-    // Salvar localmente no localStorage do navegador
-    const newSubmission: QuizSubmission = {
-      id: Date.now().toString(),
+    const submissionData = {
       name,
       email,
       subgenreResult: winnerResult.title,
-      date: new Date().toLocaleString(),
     };
 
-    const existingData: QuizSubmission[] = JSON.parse(localStorage.getItem('quiz_submissions') || '[]');
-    existingData.push(newSubmission);
-    localStorage.setItem('quiz_submissions', JSON.stringify(existingData));
+    try {
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3vmylR5GmzREjgehsOpTdltpdjDWwc7VBh-xPX9W5o0Jiju23ESXiU6v4k6s4Fa-x/exec';
 
-    setScreen('result');
-  }
-
-  function exportSubmissionsToCSV() {
-    const existingData: QuizSubmission[] = JSON.parse(localStorage.getItem('quiz_submissions') || '[]');
-    if (existingData.length === 0) {
-      alert('Ainda não existem registos guardados neste dispositivo.');
-      return;
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submissionData),
+      });
+    } catch (error) {
+      console.error('Erro ao enviar dados para a planilha:', error);
+    } finally {
+      setIsSubmitting(false);
+      setResult(winnerResult);
+      setScreen('result');
     }
-
-    let csvContent = 'data:text/csv;charset=utf-8,ID,Nome,Email,Subgenero,Data\n';
-    existingData.forEach(row => {
-      csvContent += `"${row.id}","${row.name}","${row.email}","${row.subgenreResult}","${row.date}"\n`;
-    });
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'diagnostico_quiz_subgeneros.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   }
 
   function resetQuiz() {
@@ -604,7 +582,7 @@ export default function App() {
         preload="auto"
       />
 
-      {screen === 'hero' && <HeroSection onStart={startQuiz} onExport={exportSubmissionsToCSV} />}
+      {screen === 'hero' && <HeroSection onStart={startQuiz} />}
 
       {screen === 'quiz' && (
         <QuizSection
@@ -618,7 +596,7 @@ export default function App() {
       )}
 
       {screen === 'diagnostic' && (
-        <DiagnosticSection onSubmit={handleDiagnosticSubmit} />
+        <DiagnosticSection onSubmit={handleDiagnosticSubmit} isSubmitting={isSubmitting} />
       )}
 
       {screen === 'result' && result && (
