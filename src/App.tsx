@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-// Imports das capas de livros armazenadas em src/assets/
+// Imports das capas de imagens
 import capaCorte from './assets/corte.png';
 import capaTrono from './assets/trono.png';
 import capaPriorado from './assets/priorado.png';
@@ -10,7 +10,7 @@ import capaInstrumentos from './assets/instrumentos.png';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
-type Screen = 'hero' | 'quiz' | 'result';
+type Screen = 'hero' | 'quiz' | 'diagnostic' | 'result';
 type Subgenre = 'epic' | 'dark' | 'urban' | 'romantasy' | 'historical' | 'portal';
 
 interface Option {
@@ -36,6 +36,14 @@ interface SubgenreResult {
   bookSynopsis: string;
   bookCover: string;
   authors: string;
+}
+
+interface QuizSubmission {
+  id: string;
+  name: string;
+  email: string;
+  subgenreResult: string;
+  date: string;
 }
 
 /* ─── Data ───────────────────────────────────────────────────────────────── */
@@ -113,72 +121,66 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
   epic: {
     title: 'Alta Fantasia Épica',
     subtitle: 'Reinos Imortais & Profecias das Eras',
-    description:
-      'Sua alma pulsa com o ritmo das batalhas eternas. Você é feito de lendas e estrelas — do tipo que sobrevive a guerras, ergue impérios e reescreve profecias. Os grandes mapas do mundo chamam seu nome, e dragões dobram seus pescoços para ouvi-lo.',
+    description: 'Sua alma pulsa com o ritmo das batalhas eternas. Você é feito de lendas e estrelas.',
     emblem: '⚔️',
     traits: ['Grandioso', 'Épico', 'Mitológico', 'Profético'],
     bookSuggestion: 'Trono de Vidro — Sarah J. Maas',
-    bookSynopsis: 'Celaena Sardothien, uma jovem assassina com uma dívida imortal, é forçada a competir em um torneio mortal para se tornar a Campeã do Rei e ganhar sua eventual liberdade.',
+    bookSynopsis: 'Celaena Sardothien, uma jovem assassina com uma dívida imortal.',
     bookCover: capaTrono,
     authors: 'Tolkien · Sanderson · Sarah J. Maas',
   },
   dark: {
     title: 'Fantasia Sombria',
     subtitle: 'Fronteiras entre o Crepúsculo e o Abismo',
-    description:
-      'As trevas não te assustam — elas te fascinam. Você caminha nas bordas do mundo, onde a magia corrói a sanidade e os heróis pagam preços sangrentos por cada vitória. A beleza e o horror coexistem em você.',
+    description: 'As trevas não te assustam — elas te fascinam. Você caminha nas bordas do mundo.',
     emblem: '🖤',
     traits: ['Sombrio', 'Visceral', 'Intenso', 'Complexo'],
     bookSuggestion: 'Coração Lascivo',
-    bookSynopsis: 'Uma narrativa visceral e de escolhas morais cinzentas, onde segredos profundos, paixões proibidas e sombras implacáveis moldam o destino de personagens impiedosos.',
+    bookSynopsis: 'Uma narrativa visceral e de escolhas morais cinzentas.',
     bookCover: capaCoracao,
-    authors: 'Jennifer L. Armentrout · Anne Rice',
+    authors: 'Joe Abercrombie · V.E. Schwab',
   },
   urban: {
     title: 'Fantasia Urbana',
     subtitle: 'Ruas Encantadas de Metrópoles Secretas',
-    description:
-      'Você enxerga o que os outros ignoram — a magia escondida nos becos da cidade, os segredos urbanos e as sociedades ocultas sob o asfalto. Seu mundo habita o contraste entre o moderno e o místico.',
+    description: 'Você enxerga o que os outros ignoram — a magia escondida nos becos da cidade.',
     emblem: '🌃',
     traits: ['Contemporâneo', 'Misterioso', 'Dualista', 'Perspicaz'],
     bookSuggestion: 'Cidade dos Ossos (Os Instrumentos Mortais)',
-    bookSynopsis: 'Clary Fray testemunha um assassinato cometido por jovens cobertos de tatuagens misteriosas e descobre um mundo oculto de Caçadores de Sombras nas ruas de Nova York.',
+    bookSynopsis: 'Clary Fray testemunha um assassinato cometido por jovens cobertos de tatuagens.',
     bookCover: capaInstrumentos,
     authors: 'Neil Gaiman · Cassandra Clare · Jim Butcher',
   },
   romantasy: {
     title: 'Romantasy',
     subtitle: 'Reinos onde o Amor é a Maior das Magias',
-    description:
-      'Para você, nenhuma batalha épica supera a tensão de dois corações destinados que resistem ao destino. Você lê nas entrelinhas entre o poder e o desejo, onde cortes místicas e amores impossíveis reinam.',
+    description: 'Para você, nenhuma batalha épica supera a tensão de dois corações destinados.',
     emblem: '🌹',
     traits: ['Apaixonado', 'Intenso', 'Mágico', 'Emotivo'],
     bookSuggestion: 'Corte de Rosas e Espinhos — Sarah J. Maas',
-    bookSynopsis: 'Ao matar uma lobalsa na floresta, Feyre é levada a uma terra mágica e perigosa por uma criatura feérica. O que começa como hostilidade se transforma em uma paixão capaz de desafiar impérios.',
+    bookSynopsis: 'Ao matar uma lobalsa na floresta, Feyre é levada a uma terra mágica.',
     bookCover: capaCorte,
     authors: 'Sarah J. Maas · Rebecca Yarros · Holly Black',
   },
   historical: {
     title: 'Fantasia Histórica',
     subtitle: 'Eras Perdidas onde a Magia Moldou a História',
-    description:
-      'Você sente o cheiro de pergaminhos antigos e escuta o sussurro de civilizações esquecidas. A magia, para você, está enraizada no passado, nos rituais e nos segredos de eras remotas.',
+    description: 'Você sente o cheiro de pergaminhos antigos e escuta o sussurro de civilizações.',
     emblem: '🕯️',
     traits: ['Histórico', 'Ritualístico', 'Atmosférico', 'Erudito'],
     bookSuggestion: 'O Priorado da Laranjeira — Samantha Shannon',
-    bookSynopsis: 'Um mundo dividido e ameaçado por um despertar dracônico ancestral. Rainhas sem herdeiros, magas secretas e cavaleiros precisam unir forças para evitar a destruição total.',
+    bookSynopsis: 'Um mundo dividido e ameaçado por um despertar dracônico ancestral.',
     bookCover: capaPriorado,
     authors: 'Susanna Clarke · Naomi Novik · Samantha Shannon',
   },
   portal: {
     title: 'Fantasia de Portal',
     subtitle: 'Além — nos Mundos do Outro Lado do Espelho',
-    description:
-      'Você sempre olhou para espelhos, armários e fontes antigas com uma pergunta nos olhos: e se? Sua fantasia favorita começa quando um ser ordinário atravessa o limiar do impossível.',
+    description: 'Você sempre olhou para espelhos, armários e fontes antigas com uma pergunta.',
     emblem: '🌀',
     traits: ['Maravilhoso', 'Transformador', 'Descoberta', 'Reinvenção'],
     bookSuggestion: 'As Crônicas de Nárnia — C.S. Lewis',
-    bookSynopsis: 'Através de um guarda-roupa empoeirado, irmãos comuns entram em um mundo mágico congelado em um inverno eterno por uma Feiticeira Branca, onde animais falam e o Leão Aslan desperta.',
+    bookSynopsis: 'Através de um guarda-roupa empoeirado, irmãos comuns entram em um mundo mágico.',
     bookCover: capaNarnia,
     authors: 'C.S. Lewis · Lev Grossman · Seanan McGuire',
   },
@@ -229,16 +231,19 @@ function DiamondButton({
   variant = 'primary',
   disabled = false,
   wide = false,
+  type = 'button',
 }: {
   children: React.ReactNode;
   onClick?: () => void;
   variant?: ButtonVariant;
   disabled?: boolean;
   wide?: boolean;
+  type?: 'button' | 'submit';
 }) {
   const s = VARIANT_STYLES[variant];
   return (
     <button
+      type={type}
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
       style={{
@@ -309,9 +314,9 @@ function ParchmentCard({ children, style = {} }: { children: React.ReactNode; st
   );
 }
 
-function HeroSection({ onStart }: { onStart: () => void }) {
+function HeroSection({ onStart, onExport }: { onStart: () => void; onExport: () => void }) {
   return (
-    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
       <ParchmentCard style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
         <Filigrana />
         <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2.4rem', margin: '1.2rem 0', textShadow: '0 2px 10px rgba(212,175,55,0.4)' }}>
@@ -322,9 +327,69 @@ function HeroSection({ onStart }: { onStart: () => void }) {
           Responda a 6 perguntas sob o véu do mistério e descubra a qual mundo literário a sua alma pertence.
         </p>
         <Filigrana flip />
-        <div style={{ marginTop: '1.8rem' }}>
+        <div style={{ marginTop: '1.8rem', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
           <DiamondButton onClick={onStart} variant="primary" wide>Iniciar Jornada</DiamondButton>
+          <button 
+            onClick={onExport}
+            style={{ background: 'transparent', border: 'none', color: '#D4AF37', fontStyle: 'italic', cursor: 'pointer', fontSize: '0.85rem', textDecoration: 'underline', marginTop: '10px' }}
+          >
+            📥 Baixar Relatório de Respostas (CSV)
+          </button>
         </div>
+      </ParchmentCard>
+    </main>
+  );
+}
+
+function DiagnosticSection({ onSubmit }: { onSubmit: (name: string, email: string) => void }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !email.trim()) return;
+    onSubmit(name, email);
+  };
+
+  return (
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <ParchmentCard style={{ maxWidth: '500px', width: '100%', textAlign: 'center' }}>
+        <Filigrana />
+        <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2rem', margin: '1.2rem 0' }}>
+          Registo de Viajante
+        </h2>
+        <GoldDivider glyph="◆" />
+        <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
+          Insira as suas credenciais para que os anais do reino registem o seu diagnóstico místico.
+        </p>
+        
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left' }}>
+          <div>
+            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>Nome:</label>
+            <input 
+              type="text" 
+              value={name} 
+              onChange={e => setName(e.target.value)} 
+              required
+              placeholder="O seu nome..."
+              style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>E-mail:</label>
+            <input 
+              type="emailn" 
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
+              required
+              placeholder="O seu e-mail..."
+              style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
+            />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
+            <DiamondButton type="submit" variant="primary" wide>Revelar Destino</DiamondButton>
+          </div>
+        </form>
       </ParchmentCard>
     </main>
   );
@@ -381,7 +446,7 @@ function QuizSection({ question, questionIndex, total, selected, onSelect, onNex
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
             <DiamondButton onClick={onNext} variant="secondary" disabled={!selected}>
-              {isLast ? 'Revelar Destino' : 'Próxima Pergunta'}
+              {isLast ? 'Prosseguir para Registo' : 'Próxima Pergunta'}
             </DiamondButton>
           </div>
         </ParchmentCard>
@@ -405,7 +470,6 @@ function ResultSection({ result, onReset }: any) {
           {result.description}
         </p>
 
-        {/* CAPA CENTRALIZADA ABAIXO DO TEXTINHO DO GÊNERO */}
         <div style={{ margin: '2rem 0 1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <p style={{ fontSize: '0.8rem', color: '#D4AF37', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '10px', fontWeight: 'bold' }}>
             ✦ Obra Recomendada ✦
@@ -444,6 +508,7 @@ export default function App() {
   const [answers, setAnswers] = useState<Subgenre[]>([]);
   const [selected, setSelected] = useState<Subgenre | null>(null);
   const [result, setResult] = useState<SubgenreResult | null>(null);
+  const [pendingWinner, setPendingWinner] = useState<Subgenre | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -460,6 +525,7 @@ export default function App() {
     setQuestionIndex(0);
     setAnswers([]);
     setSelected(null);
+    setPendingWinner(null);
   }
 
   function handleNext() {
@@ -472,9 +538,52 @@ export default function App() {
       setSelected(null);
     } else {
       const winner = calculateResult(updated);
-      setResult(subgenreResults[winner]);
-      setScreen('result');
+      setPendingWinner(winner);
+      setScreen('diagnostic'); // Vai para a tela de recolha de dados antes do resultado
     }
+  }
+
+  function handleDiagnosticSubmit(name: string, email: string) {
+    if (!pendingWinner) return;
+
+    const winnerResult = subgenreResults[pendingWinner];
+    setResult(winnerResult);
+
+    // Salvar localmente no localStorage do navegador
+    const newSubmission: QuizSubmission = {
+      id: Date.now().toString(),
+      name,
+      email,
+      subgenreResult: winnerResult.title,
+      date: new Date().toLocaleString(),
+    };
+
+    const existingData: QuizSubmission[] = JSON.parse(localStorage.getItem('quiz_submissions') || '[]');
+    existingData.push(newSubmission);
+    localStorage.setItem('quiz_submissions', JSON.stringify(existingData));
+
+    setScreen('result');
+  }
+
+  function exportSubmissionsToCSV() {
+    const existingData: QuizSubmission[] = JSON.parse(localStorage.getItem('quiz_submissions') || '[]');
+    if (existingData.length === 0) {
+      alert('Ainda não existem registos guardados neste dispositivo.');
+      return;
+    }
+
+    let csvContent = 'data:text/csv;charset=utf-8,ID,Nome,Email,Subgenero,Data\n';
+    existingData.forEach(row => {
+      csvContent += `"${row.id}","${row.name}","${row.email}","${row.subgenreResult}","${row.date}"\n`;
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'diagnostico_quiz_subgeneros.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   function resetQuiz() {
@@ -483,11 +592,11 @@ export default function App() {
     setAnswers([]);
     setSelected(null);
     setResult(null);
+    setPendingWinner(null);
   }
 
   return (
     <div style={{ minHeight: '100vh', background: '#0c090a' }}>
-      {/* Player de áudio vinculado diretamente à pasta public */}
       <audio 
         ref={audioRef} 
         src="/enya.mp3" 
@@ -495,7 +604,7 @@ export default function App() {
         preload="auto"
       />
 
-      {screen === 'hero' && <HeroSection onStart={startQuiz} />}
+      {screen === 'hero' && <HeroSection onStart={startQuiz} onExport={exportSubmissionsToCSV} />}
 
       {screen === 'quiz' && (
         <QuizSection
@@ -506,6 +615,10 @@ export default function App() {
           onSelect={setSelected}
           onNext={handleNext}
         />
+      )}
+
+      {screen === 'diagnostic' && (
+        <DiagnosticSection onSubmit={handleDiagnosticSubmit} />
       )}
 
       {screen === 'result' && result && (
