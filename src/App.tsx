@@ -1,14 +1,22 @@
 import React, { useState, useRef } from 'react';
 
-// Imports da pasta src/assets/
-import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
-import capaCorte from './assets/corte.png';
-import capaTrono from './assets/trono.png';
-import capaPriorado from './assets/priorado.png';
-import capaCoracao from './assets/coracao.png';
-import capaNarnia from './assets/narnia.png';
+
+import backgroundMusic from './src/assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
+// Imports exatos da pasta src/assets/ 
+// (Se alguma imagem for .jpg no seu computador, mude a extensão abaixo de .png para .jpg)
+import backgroundMusic from './src/assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
+import capaCorte from './src/assets/corte.png';
+import capaTrono from './src/assets/trono.png';
+import capaPriorado from './src/assets/priorado.png';
+import capaCoracao from './src/assets/coracao.png';
+import capaNarnia from './src/assets/narnia.png';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
+<audio 
+  ref={audioRef} 
+  src={backgroundMusic} 
+  loop 
+/>
 
 type Screen = 'hero' | 'quiz' | 'result';
 type Subgenre = 'epic' | 'dark' | 'urban' | 'romantasy' | 'historical' | 'portal';
@@ -490,7 +498,6 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#0c090a' }}>
-      {/* Player de áudio da Enya mapeado via import do src/assets */}
       <audio 
         ref={audioRef} 
         src={backgroundMusic} 
