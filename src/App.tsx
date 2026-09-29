@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 
 // Imports absolutos a partir de src/ garantidos pelo alias ou caminho relativo correto
-import backgroundMusic from './assets/-_Enya_-_Caribbean_Blue_(mp3.pm).mp3';
+import backgroundMusic from './enya.mp3';
 import capaCorte from './assets/corte.png';
 import capaTrono from './assets/trono.png';
 import capaPriorado from './assets/priorado.png';
