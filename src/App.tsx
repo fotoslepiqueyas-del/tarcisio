@@ -161,7 +161,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     emblem: '🕯️',
     traits: ['Histórico', 'Ritualístico', 'Atmosférico', 'Erudito'],
     bookSuggestion: 'O Priorado da Laranjeira — Samantha Shannon',
-    bookSynopsis: 'Um mundo dividido e ameaçado por um despertar dracônico ancestral.',
+    bookSynopsis: 'Um mundo dividedo e ameaçado por um despertar dracônico ancestral.',
     bookCover: capaPriorado,
     authors: 'Susanna Clarke · Naomi Novik · Samantha Shannon',
   },
@@ -327,14 +327,13 @@ function HeroSection({ onStart }: { onStart: () => void }) {
   );
 }
 
-function DiagnosticSection({ onSubmit, isSubmitting }: { onSubmit: (name: string, email: string) => void; isSubmitting: boolean }) {
+function DiagnosticSection({ onSubmit, isSubmitting }: { onSubmit: (name: string) => void; isSubmitting: boolean }) {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || isSubmitting) return;
-    onSubmit(name, email);
+    if (!name.trim() || isSubmitting) return;
+    onSubmit(name);
   };
 
   return (
@@ -346,12 +345,12 @@ function DiagnosticSection({ onSubmit, isSubmitting }: { onSubmit: (name: string
         </h2>
         <GoldDivider glyph="◆" />
         <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
-          Insira as suas credenciais para que os anais do reino registem o seu diagnóstico místico.
+          Insira o seu nome para que os anais do reino registem o seu diagnóstico místico.
         </p>
         
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left' }}>
           <div>
-            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>Nome:</label>
+            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>Seu Nome:</label>
             <input 
               type="text" 
               value={name} 
@@ -359,18 +358,6 @@ function DiagnosticSection({ onSubmit, isSubmitting }: { onSubmit: (name: string
               required
               disabled={isSubmitting}
               placeholder="O seu nome..."
-              style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
-            />
-          </div>
-          <div>
-            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>E-mail:</label>
-            <input 
-              type="email" 
-              value={email} 
-              onChange={e => setEmail(e.target.value)} 
-              required
-              disabled={isSubmitting}
-              placeholder="O seu e-mail..."
               style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
             />
           </div>
@@ -534,7 +521,7 @@ export default function App() {
     }
   }
 
-  async function handleDiagnosticSubmit(name: string, email: string) {
+  async function handleDiagnosticSubmit(name: string) {
     if (!pendingWinner || isSubmitting) return;
 
     setIsSubmitting(true);
@@ -542,7 +529,6 @@ export default function App() {
 
     const submissionData = {
       name,
-      email,
       subgenreResult: winnerResult.title,
     };
 
