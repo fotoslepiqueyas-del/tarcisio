@@ -489,7 +489,7 @@ export default function App() {
       {/* Player de áudio centralizado na raiz do App com loop nativo */}
       <audio 
         ref={audioRef} 
-        src={/enya.mp3} 
+        src="/enya.mp3"
         loop 
         preload="auto"
       />
