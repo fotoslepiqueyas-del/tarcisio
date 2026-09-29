@@ -1,34 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&display=swap');
 @import 'tailwindcss';
 
 html,
 body,
 #root {
   height: 100%;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background-color: #F5F3E7;
+  color: #333333;
 }
 
 * {
   -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
 }
 
-::-webkit-scrollbar { display: none; }
-* { scrollbar-width: none; }
+::-webkit-scrollbar { 
+  display: none; 
+}
+* { 
+  scrollbar-width: none; 
+}
 
 @theme inline {
-  --color-blue-inst: #1A6FBF;
-  --color-blue-light: #EBF4FF;
-  --color-blue-dark: #0F4A8A;
-  --color-status-green: #27AE60;
-  --color-status-green-bg: #E8F8EF;
-  --color-status-yellow: #F39C12;
-  --color-status-yellow-bg: #FEF9E7;
-  --color-status-red: #E74C3C;
-  --color-status-red-bg: #FDEDEC;
-  --color-surface: #F7F8FA;
-  --color-card: #FFFFFF;
-  --color-border: #E8EAED;
-  --color-muted: #9EA5B0;
-  --color-text: #1A1D23;
-  --color-text-secondary: #5A6170;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-cursive: 'Great Vibes', cursive;
+  
+  --color-parchment-base: #F5F3E7;
+  --color-burgundy: #560319;
+  --color-olive: #4B5320;
+  --color-gold: #D4AF37;
+  --color-rose-soft: #E6C7C2;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
 }
