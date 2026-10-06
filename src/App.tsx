@@ -155,7 +155,7 @@ const questions: Question[] = [
     options: [
       { text: 'O destino é uma linha reta que devemos cumprir com honra', icon: '🛡️', subgenre: 'epic' },
       { text: 'O destino é uma piada cruel de deuses caprichosos', icon: '🎭', subgenre: 'mythological' },
-      { text: 'O destino pode ser reescrito através de alianças e sacrifícios', icon: '✍️️', subgenre: 'romantasy' },
+      { text: 'O destino pode ser reescrito através de alianças e sacrifícios', icon: '✍', subgenre: 'romantasy' },
       { text: 'O destino não existe; nós o forjamos nas trevas do presente', icon: '⚒️', subgenre: 'grimdark' },
     ],
   },
@@ -164,7 +164,7 @@ const questions: Question[] = [
     question: 'Qual paisagem desperta sua curiosidade?',
     subtitle: 'O cenário que captura seus pensamentos mais profundos',
     options: [
-      { text: 'Ruínas ancestrais cobertas por musgo e runas esquecidas', icon: '🏛️️', subgenre: 'historical' },
+      { text: 'Ruínas ancestrais cobertas por musgo e runas esquecidas', icon: '🏛', subgenre: 'historical' },
       { text: 'Cidades vertiginosas iluminadas a gás com dirigíveis no céu', icon: '🎈', subgenre: 'steampunk' },
       { text: 'Florestas encantadas onde árvores sussurram segredos antigos', icon: '🌲', subgenre: 'portal' },
       { text: 'Montanhas coroadas por tempestades e templos esquecidos', icon: '⛰️', subgenre: 'mythological' },
@@ -501,95 +501,4 @@ function DevLoginSection({ onLoginSuccess, onBack }: { onLoginSuccess: () => voi
         
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left' }}>
           <div>
-            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>Senha de Acesso:</label>
-            <input 
-              type="password" 
-              value={password} 
-              onChange={e => { setPassword(e.target.value); setError(false); }} 
-              required
-              placeholder="Digite a senha..."
-              style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
-            />
-            {error && <span style={{ color: '#ff6b6b', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>Senha incorreta. Tente novamente.</span>}
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', gap: '10px' }}>
-            <DiamondButton type="submit" variant="primary">Entrar</DiamondButton>
-          </div>
-        </form>
-        <div style={{ marginTop: '1rem' }}>
-          <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#E6C7C2', cursor: 'pointer', fontSize: '0.85rem', fontFamily: 'Georgia, serif', textDecoration: 'underline' }}>
-            Voltar ao Início
-          </button>
-        </div>
-      </ParchmentCard>
-    </main>
-  );
-}
-
-function DevDashboardSection({ onBack }: { onBack: () => void }) {
-  const [participants, setParticipants] = useState<ParticipantRecord[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  useEffect(() => {
-    fetch(GOOGLE_SCRIPT_URL)
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setParticipants(data);
-        } else {
-          setErrorMsg('Formato de dados inesperado da planilha.');
-        }
-      })
-      .catch(err => {
-        console.error("Erro ao carregar dados do Google Sheets:", err);
-        setErrorMsg('Não foi possível conectar à planilha. Verifique a URL do Script.');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  return (
-    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', padding: '3rem 1rem', display: 'flex', justifyContent: 'center' }}>
-      <div style={{ maxWidth: '850px', width: '100%' }}>
-        <ParchmentCard>
-          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-            <Filigrana />
-            <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2rem', margin: '1rem 0' }}>
-              Painel Dev: Dados do Google Sheets
-            </h2>
-            <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.9rem' }}>
-              Registros obtidos em tempo real direto da sua planilha integrada.
-            </p>
-            <GoldDivider glyph="📊" />
-          </div>
-
-          <div style={{ maxHeight: '38vh', overflowY: 'auto', marginBottom: '1.5rem', border: '1px solid rgba(212,175,55,0.3)', padding: '10px', background: 'rgba(0,0,0,0.3)' }}>
-            {loading ? (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: '#E6C7C2', padding: '2rem' }}>
-                Carregando registros da planilha...
-              </p>
-            ) : errorMsg ? (
-              <p style={{ textAlign: 'center', color: '#ffb3b3', padding: '2rem' }}>
-                {errorMsg}
-              </p>
-            ) : participants.length === 0 ? (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: '#E6C7C2', padding: '2rem' }}>
-                Nenhum registro encontrado na planilha.
-              </p>
-            ) : (
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontFamily: 'Georgia, serif', fontSize: '0.9rem' }}>
-                <thead>
-                  <tr style={{ borderBottom: '1px solid #D4AF37', color: '#D4AF37' }}>
-                    <th style={{ padding: '8px' }}>Nome</th>
-                    <th style={{ padding: '8px' }}>Subgênero Registrado</th>
-                    <th style={{ padding: '8px' }}>Data / Hora</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {participants.map((p, idx) => (
-                    <tr key={idx} style={{ borderBottom: '1px solid rgba(212,175,55,0.1)', color: '#F5F3E7' }}>
-                      <td style={{ padding: '8px', fontWeight: 'bold' }}>{p.name}</td>
-                      <td style={{ padding: '8px', color: '#E6C7C2' }}>{p.subgenre}</td>
-                      <td style={{ padding: '8px', fontSize: '0.8rem', opacity: 0.8
+            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '
