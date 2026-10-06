@@ -7,6 +7,9 @@ import capaPriorado from './assets/priorado.png';
 import capaCoracao from './assets/coracao.png';
 import capaNarnia from './assets/narnia.png';
 import capaInstrumentos from './assets/instrumentos.png';
+import capaMortal from './assets/mortal.png';
+import capaPrimeira from './assets/primeira.png';
+import capaAquiles from './assets/aquiles.png';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
@@ -291,7 +294,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Realista', 'Sombrio', 'Desafiador', 'Cruel'],
     bookSuggestion: 'A Primeira Lei — Joe Abercrombie',
     bookSynopsis: 'Um inquisidor sádico, um bárbaro atormentado e um nobre arrogante cruzam seus caminhos.',
-    bookCover: capaCoracao,
+    bookCover: capaPrimeira,
     authors: 'Joe Abercrombie · George R.R. Martin · Mark Lawrence',
   },
   mythological: {
@@ -302,7 +305,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Divino', 'Épico', 'Lendário', 'Ancestral'],
     bookSuggestion: 'A Canção de Aquiles — Madeline Miller',
     bookSynopsis: 'A jornada mítica e trágica de dois jovens príncipes unidos pelo destino e pela guerra.',
-    bookCover: capaTrono,
+    bookCover: capaAquiles,
     authors: 'Madeline Miller · Rick Riordan · Neil Gaiman',
   },
   steampunk: {
@@ -313,7 +316,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Inventivo', 'Mecânico', 'Vitoriano', 'Visionário'],
     bookSuggestion: 'As Máquinas Mortais — Philip Reeve',
     bookSynopsis: 'Cidades sobre rodas vagando por um mundo devastado em busca de recursos.',
-    bookCover: capaPriorado,
+    bookCover: capaMortal,
     authors: 'Philip Reeve · China Miéville · Jules Verne',
   },
 };
