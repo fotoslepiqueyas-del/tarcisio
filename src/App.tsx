@@ -44,7 +44,7 @@ interface ParticipantRecord {
   date?: string;
 }
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5MdCtWdLosFL83yD4mOVwySBiMqGVMpJ_l7zU1xU/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5MdCtWdLosFL83yD4mOVwySBiMqGVMpJ_l7zU1xU/dev';
 
 /* ─── Data: 15 Perguntas com 4 Opções Cada ───────────────────────────────── */
 
@@ -167,7 +167,7 @@ const questions: Question[] = [
       { text: 'Ruínas ancestrais cobertas por musgo e runas esquecidas', icon: '🏛️', subgenre: 'historical' },
       { text: 'Cidades vertiginosas iluminadas a gás com dirigíveis no céu', icon: '🎈', subgenre: 'steampunk' },
       { text: 'Florestas encantadas onde árvores sussurram segredos antigos', icon: '🌲', subgenre: 'portal' },
-      { text: 'Montanhas coroadas por tempestades e templos esquecidos', icon: '⛰️️', subgenre: 'mythological' },
+      { text: 'Montanhas coroadas por tempestades e templos esquecidos', icon: '⛰️', subgenre: 'mythological' },
     ],
   },
   {
