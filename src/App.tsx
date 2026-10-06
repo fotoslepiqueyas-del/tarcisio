@@ -155,7 +155,7 @@ const questions: Question[] = [
     options: [
       { text: 'O destino é uma linha reta que devemos cumprir com honra', icon: '🛡️', subgenre: 'epic' },
       { text: 'O destino é uma piada cruel de deuses caprichosos', icon: '🎭', subgenre: 'mythological' },
-      { text: 'O destino pode ser reescrito através de alianças e sacrifícios', icon: '✍', subgenre: 'romantasy' },
+      { text: 'O destino pode ser reescrito através de alianças e sacrifícios', icon: '✍️️', subgenre: 'romantasy' },
       { text: 'O destino não existe; nós o forjamos nas trevas do presente', icon: '⚒️', subgenre: 'grimdark' },
     ],
   },
@@ -164,7 +164,7 @@ const questions: Question[] = [
     question: 'Qual paisagem desperta sua curiosidade?',
     subtitle: 'O cenário que captura seus pensamentos mais profundos',
     options: [
-      { text: 'Ruínas ancestrais cobertas por musgo e runas esquecidas', icon: '🏛', subgenre: 'historical' },
+      { text: 'Ruínas ancestrais cobertas por musgo e runas esquecidas', icon: '🏛️️', subgenre: 'historical' },
       { text: 'Cidades vertiginosas iluminadas a gás com dirigíveis no céu', icon: '🎈', subgenre: 'steampunk' },
       { text: 'Florestas encantadas onde árvores sussurram segredos antigos', icon: '🌲', subgenre: 'portal' },
       { text: 'Montanhas coroadas por tempestades e templos esquecidos', icon: '⛰️', subgenre: 'mythological' },
@@ -501,4 +501,391 @@ function DevLoginSection({ onLoginSuccess, onBack }: { onLoginSuccess: () => voi
         
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left' }}>
           <div>
-            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '
+            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>Senha de Acesso:</label>
+            <input 
+              type="password" 
+              value={password} 
+              onChange={e => { setPassword(e.target.value); setError(false); }} 
+              required
+              placeholder="Digite a senha..."
+              style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
+            />
+            {error && <span style={{ color: '#ff6b6b', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>Senha incorreta. Tente novamente.</span>}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', gap: '10px' }}>
+            <DiamondButton type="submit" variant="primary">Entrar</DiamondButton>
+          </div>
+        </form>
+        <div style={{ marginTop: '1rem' }}>
+          <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#E6C7C2', cursor: 'pointer', fontSize: '0.85rem', fontFamily: 'Georgia, serif', textDecoration: 'underline' }}>
+            Voltar ao Início
+          </button>
+        </div>
+      </ParchmentCard>
+    </main>
+  );
+}
+
+function DevDashboardSection({ onBack }: { onBack: () => void }) {
+  const [participants, setParticipants] = useState<ParticipantRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    fetch(GOOGLE_SCRIPT_URL)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setParticipants(data);
+        } else {
+          setErrorMsg('Formato de dados inesperado da planilha.');
+        }
+      })
+      .catch(err => {
+        console.error("Erro ao carregar dados do Google Sheets:", err);
+        setErrorMsg('Não foi possível conectar à planilha. Verifique a URL do Script.');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', padding: '3rem 1rem', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ maxWidth: '850px', width: '100%' }}>
+        <ParchmentCard>
+          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+            <Filigrana />
+            <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2rem', margin: '1rem 0' }}>
+              Painel Dev: Dados do Google Sheets
+            </h2>
+            <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.9rem' }}>
+              Registros obtidos em tempo real direto da sua planilha integrada.
+            </p>
+            <GoldDivider glyph="📊" />
+          </div>
+
+          <div style={{ maxHeight: '38vh', overflowY: 'auto', marginBottom: '1.5rem', border: '1px solid rgba(212,175,55,0.3)', padding: '10px', background: 'rgba(0,0,0,0.3)' }}>
+            {loading ? (
+              <p style={{ textAlign: 'center', fontStyle: 'italic', color: '#E6C7C2', padding: '2rem' }}>
+                Carregando registros da planilha...
+              </p>
+            ) : errorMsg ? (
+              <p style={{ textAlign: 'center', color: '#ffb3b3', padding: '2rem' }}>
+                {errorMsg}
+              </p>
+            ) : participants.length === 0 ? (
+              <p style={{ textAlign: 'center', fontStyle: 'italic', color: '#E6C7C2', padding: '2rem' }}>
+                Nenhum registro encontrado na planilha.
+              </p>
+            ) : (
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontFamily: 'Georgia, serif', fontSize: '0.9rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid #D4AF37', color: '#D4AF37' }}>
+                    <th style={{ padding: '8px' }}>Nome</th>
+                    <th style={{ padding: '8px' }}>Subgênero Registrado</th>
+                    <th style={{ padding: '8px' }}>Data / Hora</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {participants.map((p, idx) => (
+                    <tr key={idx} style={{ borderBottom: '1px solid rgba(212,175,55,0.1)', color: '#F5F3E7' }}>
+                      <td style={{ padding: '8px', fontWeight: 'bold' }}>{p.name}</td>
+                      <td style={{ padding: '8px', color: '#E6C7C2' }}>{p.subgenre}</td>
+                      <td style={{ padding: '8px', fontSize: '0.8rem', opacity: 0.8 }}>{p.date || '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
+            <DiamondButton onClick={onBack} variant="secondary">Voltar ao Início</DiamondButton>
+          </div>
+        </ParchmentCard>
+      </div>
+    </main>
+  );
+}
+
+function DiagnosticSection({ onSubmit, isSubmitting }: { onSubmit: (name: string) => void; isSubmitting: boolean }) {
+  const [name, setName] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || isSubmitting) return;
+    onSubmit(name);
+  };
+
+  return (
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <ParchmentCard style={{ maxWidth: '500px', width: '100%', textAlign: 'center' }}>
+        <Filigrana />
+        <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2rem', margin: '1.2rem 0' }}>
+          Registo de Viajante
+        </h2>
+        <GoldDivider glyph="◆" />
+        <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
+          Insira o seu nome para que os anais do reino registem o seu diagnóstico místico.
+        </p>
+        
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left' }}>
+          <div>
+            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>Seu Nome:</label>
+            <input 
+              type="text" 
+              value={name} 
+              onChange={e => setName(e.target.value)} 
+              required
+              disabled={isSubmitting}
+              placeholder="O seu nome..."
+              style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
+            />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
+            <DiamondButton type="submit" variant="primary" wide disabled={isSubmitting}>
+              {isSubmitting ? 'A enviar para Planilha...' : 'Revelar Destino'}
+            </DiamondButton>
+          </div>
+        </form>
+      </ParchmentCard>
+    </main>
+  );
+}
+
+function QuizSection({ question, questionIndex, total, selected, onSelect, onNext }: any) {
+  const isLast = questionIndex === total - 1;
+  const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
+
+  return (
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <div style={{ maxWidth: '620px', width: '100%' }}>
+        <p style={{ textAlign: 'center', color: '#D4AF37', fontSize: '0.8rem', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem', fontFamily: "Georgia, serif" }}>
+          Pergunta {questionIndex + 1} de {total}
+        </p>
+        <ParchmentCard>
+          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+            <h2 style={{ fontFamily: "Georgia, serif", color: '#F5F3E7', fontSize: '1.85rem', margin: 0, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+              {question.question}
+            </h2>
+            <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.95rem', marginTop: '6px' }}>{question.subtitle}</p>
+            <GoldDivider glyph="◆" />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {question.options.map((opt: any, idx: number) => {
+              const isSelected = selected === opt.subgenre;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => onSelect(opt.subgenre)}
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '14px',
+                    padding: '14px 18px',
+                    background: isSelected ? 'linear-gradient(135deg, #4B5320 0%, #2c3212 100%)' : 'rgba(35, 18, 24, 0.7)',
+                    border: isSelected ? '1.5px solid #D4AF37' : '1px solid rgba(212,175,55,0.3)',
+                    cursor: 'pointer',
+                    color: isSelected ? '#F5F3E7' : '#E6C7C2',
+                    fontFamily: "Georgia, serif",
+                    fontSize: '1.05rem',
+                    boxShadow: isSelected ? '0 4px 15px rgba(75,83,32,0.4)' : 'none',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  <span style={{ fontWeight: 'bold', color: '#D4AF37' }}>{OPTION_LETTERS[idx]}.</span>
+                  <span style={{ fontSize: '1.2rem' }}>{opt.icon}</span>
+                  <span style={{ fontStyle: 'italic' }}>{opt.text}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+            <DiamondButton onClick={onNext} variant="secondary" disabled={!selected}>
+              {isLast ? 'Prosseguir para Registo' : 'Próxima Pergunta'}
+            </DiamondButton>
+          </div>
+        </ParchmentCard>
+      </div>
+    </main>
+  );
+}
+
+function ResultSection({ result, onReset }: any) {
+  return (
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <ParchmentCard style={{ maxWidth: '640px', width: '100%', textAlign: 'center' }}>
+        <div style={{ fontSize: '3.2rem', marginBottom: '0.2rem', filter: 'drop-shadow(0 2px 8px rgba(212,175,55,0.4))' }}>{result.emblem}</div>
+        <Filigrana />
+        <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2.5rem', margin: '0.5rem 0' }}>{result.title}</h2>
+        <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '1.05rem', marginBottom: '1rem' }}>{result.subtitle}</p>
+        
+        <GoldDivider glyph="◆ ◆ ◆" />
+        
+        <p style={{ fontStyle: 'italic', color: '#F5F3E7', lineHeight: '1.7', textAlign: 'left', margin: '1.2rem 0', fontSize: '1.05rem' }}>
+          {result.description}
+        </p>
+
+        <div style={{ margin: '2rem 0 1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <p style={{ fontSize: '0.8rem', color: '#D4AF37', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '10px', fontWeight: 'bold' }}>
+            ✦ Obra Recomendada ✦
+          </p>
+          <div style={{ position: 'relative', padding: '6px', background: 'rgba(212, 175, 55, 0.1)', border: '1px solid #D4AF37', boxShadow: '0 8px 25px rgba(0,0,0,0.6)' }}>
+            <img 
+              src={result.bookCover} 
+              alt={result.bookSuggestion} 
+              style={{ width: '150px', height: '220px', objectFit: 'cover', display: 'block' }} 
+            />
+          </div>
+          
+          <h3 style={{ fontFamily: "Georgia, serif", fontSize: '1.35rem', color: '#D4AF37', fontWeight: 'bold', marginTop: '14px', marginBottom: '8px' }}>
+            {result.bookSuggestion}
+          </h3>
+
+          <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.98rem', lineHeight: '1.6', maxWidth: '520px', margin: '0 auto', textAlign: 'center', background: 'rgba(86, 3, 25, 0.3)', padding: '12px 16px', borderLeft: '2px solid #D4AF37', borderRight: '2px solid #D4AF37' }}>
+            "{result.bookSynopsis}"
+          </p>
+        </div>
+
+        <p style={{ fontSize: '0.9rem', color: '#bfa89b', fontStyle: 'italic', margin: '1.5rem 0 1rem' }}>Autores essenciais: {result.authors}</p>
+        
+        <Filigrana flip />
+        <div style={{ marginTop: '1.8rem' }}>
+          <DiamondButton onClick={onReset} variant="primary">Refazer o Quiz</DiamondButton>
+        </div>
+      </ParchmentCard>
+    </main>
+  );
+}
+
+export default function App() {
+  const [screen, setScreen] = useState<Screen>('hero');
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Subgenre[]>([]);
+  const [selected, setSelected] = useState<Subgenre | null>(null);
+  const [result, setResult] = useState<SubgenreResult | null>(null);
+  const [pendingWinner, setPendingWinner] = useState<Subgenre | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  function startQuiz() {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.volume = 0.4;
+      audioRef.current.play().catch(err => {
+        console.warn("Reprodução automática impedida pelo navegador:", err);
+      });
+    }
+
+    setScreen('quiz');
+    setQuestionIndex(0);
+    setAnswers([]);
+    setSelected(null);
+    setPendingWinner(null);
+  }
+
+  function handleNext() {
+    if (!selected) return;
+    const updated = [...answers, selected];
+
+    if (questionIndex < questions.length - 1) {
+      setAnswers(updated);
+      setQuestionIndex(i => i + 1);
+      setSelected(null);
+    } else {
+      const winner = calculateResult(updated);
+      setPendingWinner(winner);
+      setScreen('diagnostic');
+    }
+  }
+
+  async function handleDiagnosticSubmit(name: string) {
+    if (!pendingWinner || isSubmitting) return;
+
+    setIsSubmitting(true);
+    const winnerResult = subgenreResults[pendingWinner];
+
+    const submissionData = {
+      name,
+      subgenreResult: winnerResult.title,
+    };
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submissionData),
+      });
+    } catch (error) {
+      console.error('Erro ao enviar dados para a planilha:', error);
+    } finally {
+      setIsSubmitting(false);
+      setResult(winnerResult);
+      setScreen('result');
+    }
+  }
+
+  function resetQuiz() {
+    setScreen('hero');
+    setQuestionIndex(0);
+    setAnswers([]);
+    setSelected(null);
+    setResult(null);
+    setPendingWinner(null);
+  }
+
+  return (
+    <div style={{ minHeight: '100vh', background: '#0c090a' }}>
+      <audio 
+        ref={audioRef} 
+        src="/enya.mp3" 
+        loop 
+        preload="auto"
+      />
+
+      {screen === 'hero' && (
+        <HeroSection 
+          onStart={startQuiz} 
+          onDevAccess={() => setScreen('dev-login')} 
+        />
+      )}
+
+      {screen === 'dev-login' && (
+        <DevLoginSection 
+          onLoginSuccess={() => setScreen('dev-dashboard')} 
+          onBack={() => setScreen('hero')} 
+        />
+      )}
+
+      {screen === 'dev-dashboard' && (
+        <DevDashboardSection 
+          onBack={() => setScreen('hero')} 
+        />
+      )}
+
+      {screen === 'quiz' && (
+        <QuizSection
+          question={questions[questionIndex]}
+          questionIndex={questionIndex}
+          total={questions.length}
+          selected={selected}
+          onSelect={setSelected}
+          onNext={handleNext}
+        />
+      )}
+
+      {screen === 'diagnostic' && (
+        <DiagnosticSection onSubmit={handleDiagnosticSubmit} isSubmitting={isSubmitting} />
+      )}
+
+      {screen === 'result' && result && (
+        <ResultSection result={result} onReset={resetQuiz} />
+      )}
+    </div>
+  );
+}
