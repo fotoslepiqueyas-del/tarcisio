@@ -10,7 +10,7 @@ import capaInstrumentos from './assets/instrumentos.png';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
-type Screen = 'hero' | 'quiz' | 'diagnostic' | 'result';
+type Screen = 'hero' | 'quiz' | 'diagnostic' | 'result' | 'dev-login' | 'dev-dashboard';
 type Subgenre = 'epic' | 'dark' | 'urban' | 'romantasy' | 'historical' | 'portal' | 'grimdark' | 'mythological' | 'steampunk';
 
 interface Option {
@@ -438,9 +438,9 @@ function ParchmentCard({ children, style = {} }: { children: React.ReactNode; st
   );
 }
 
-function HeroSection({ onStart }: { onStart: () => void }) {
+function HeroSection({ onStart, onDevAccess }: { onStart: () => void; onDevAccess: () => void }) {
   return (
-    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
       <ParchmentCard style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
         <Filigrana />
         <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2.4rem', margin: '1.2rem 0', textShadow: '0 2px 10px rgba(212,175,55,0.4)' }}>
@@ -451,10 +451,114 @@ function HeroSection({ onStart }: { onStart: () => void }) {
           Responda às 15 perguntas sob o véu do mistério e descubra a qual mundo literário a sua alma pertence.
         </p>
         <Filigrana flip />
-        <div style={{ marginTop: '1.8rem' }}>
+        <div style={{ marginTop: '1.8rem', display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
           <DiamondButton onClick={onStart} variant="primary" wide>Iniciar Jornada</DiamondButton>
         </div>
       </ParchmentCard>
+      
+      {/* Botão sutil para acesso da programadora */}
+      <button 
+        onClick={onDevAccess}
+        style={{ background: 'transparent', border: 'none', color: '#D4AF37', marginTop: '1.5rem', fontFamily: 'Georgia, serif', fontSize: '0.85rem', cursor: 'pointer', opacity: 0.7, textDecoration: 'underline' }}
+      >
+        Acesso de Programadora (Gêneros & Sistema)
+      </button>
+    </main>
+  );
+}
+
+function DevLoginSection({ onLoginSuccess, onBack }: { onLoginSuccess: () => void; onBack: () => void }) {
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Senha padrão de exemplo para a programadora (mude se desejar)
+    if (password === 'lepique2026') {
+      onLoginSuccess();
+    } else {
+      setError(true);
+    }
+  };
+
+  return (
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <ParchmentCard style={{ maxWidth: '450px', width: '100%', textAlign: 'center' }}>
+        <Filigrana />
+        <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '1.8rem', margin: '1.2rem 0' }}>
+          Painel da Programadora
+        </h2>
+        <GoldDivider glyph="🔒" />
+        <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+          Digite a senha secreta para gerenciar e visualizar os subgêneros do app.
+        </p>
+        
+        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left' }}>
+          <div>
+            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>Senha de Acesso:</label>
+            <input 
+              type="password" 
+              value={password} 
+              onChange={e => { setPassword(e.target.value); setError(false); }} 
+              required
+              placeholder="Digite a senha..."
+              style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
+            />
+            {error && <span style={{ color: '#ff6b6b', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>Senha incorreta. Tente "lepique2026".</span>}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', gap: '10px' }}>
+            <DiamondButton type="submit" variant="primary">Entrar</DiamondButton>
+          </div>
+        </form>
+        <div style={{ marginTop: '1rem' }}>
+          <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#E6C7C2', cursor: 'pointer', fontSize: '0.85rem', fontFamily: 'Georgia, serif', textDecoration: 'underline' }}>
+            Voltar ao Início
+          </button>
+        </div>
+      </ParchmentCard>
+    </main>
+  );
+}
+
+function DevDashboardSection({ onBack }: { onBack: () => void }) {
+  return (
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', padding: '3rem 1rem', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ maxWidth: '800px', width: '100%' }}>
+        <ParchmentCard>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <Filigrana />
+            <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2.2rem', margin: '1rem 0' }}>
+              Atlas de Subgêneros (Painel Dev)
+            </h2>
+            <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.95rem' }}>
+              Lista de todos os 9 mundos literários ativos no aplicativo e suas obras de referência.
+            </p>
+            <GoldDivider glyph="✦ ✦ ✦" />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', maxHeight: '50vh', overflowY: 'auto', paddingRight: '6px' }}>
+            {Object.entries(subgenreResults).map(([key, data]) => (
+              <div key={key} style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(212,175,55,0.4)', padding: '16px', borderRadius: '6px' }}>
+                <div style={{ fontSize: '1.8rem', marginBottom: '6px' }}>{data.emblem}</div>
+                <h4 style={{ color: '#D4AF37', fontFamily: 'Georgia, serif', fontSize: '1.1rem', margin: '0 0 4px 0' }}>{data.title}</h4>
+                <p style={{ fontSize: '0.8rem', color: '#E6C7C2', fontStyle: 'italic', margin: '0 0 8px 0' }}>Chave interna: <code>{key}</code></p>
+                <p style={{ fontSize: '0.85rem', color: '#F5F3E7', margin: '4px 0' }}><strong>Obra:</strong> {data.bookSuggestion}</p>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '8px' }}>
+                  {data.traits.map((t, idx) => (
+                    <span key={idx} style={{ fontSize: '0.7rem', background: 'rgba(212,175,55,0.2)', color: '#D4AF37', padding: '2px 6px', borderRadius: '4px' }}>
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+            <DiamondButton onClick={onBack} variant="secondary">Sair do Painel Dev</DiamondButton>
+          </div>
+        </ParchmentCard>
+      </div>
     </main>
   );
 }
@@ -700,7 +804,25 @@ export default function App() {
         preload="auto"
       />
 
-      {screen === 'hero' && <HeroSection onStart={startQuiz} />}
+      {screen === 'hero' && (
+        <HeroSection 
+          onStart={startQuiz} 
+          onDevAccess={() => setScreen('dev-login')} 
+        />
+      )}
+
+      {screen === 'dev-login' && (
+        <DevLoginSection 
+          onLoginSuccess={() => setScreen('dev-dashboard')} 
+          onBack={() => setScreen('hero')} 
+        />
+      )}
+
+      {screen === 'dev-dashboard' && (
+        <DevDashboardSection 
+          onBack={() => setScreen('hero')} 
+        />
+      )}
 
       {screen === 'quiz' && (
         <QuizSection
