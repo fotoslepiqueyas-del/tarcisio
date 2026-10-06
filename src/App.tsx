@@ -44,7 +44,7 @@ interface ParticipantRecord {
   date?: string;
 }
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3vmylR5GmzREjgehsOpTdltpdjDWwc7VBh-xPX9W5o0Jiju23ESXiU6v4k6s4Fa-x/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5MdCtWdLosFL83yD4mOVwySBiMqGVMpJ_l7zU1xU/exec';
 
 /* ─── Data: 15 Perguntas com 4 Opções Cada ───────────────────────────────── */
 
@@ -167,7 +167,7 @@ const questions: Question[] = [
       { text: 'Ruínas ancestrais cobertas por musgo e runas esquecidas', icon: '🏛️', subgenre: 'historical' },
       { text: 'Cidades vertiginosas iluminadas a gás com dirigíveis no céu', icon: '🎈', subgenre: 'steampunk' },
       { text: 'Florestas encantadas onde árvores sussurram segredos antigos', icon: '🌲', subgenre: 'portal' },
-      { text: 'Montanhas coroadas por tempestades e templos esquecidos', icon: '⛰️', subgenre: 'mythological' },
+      { text: 'Montanhas coroadas por tempestades e templos esquecidos', icon: '⛰️️', subgenre: 'mythological' },
     ],
   },
   {
@@ -532,7 +532,6 @@ function DevDashboardSection({ onBack }: { onBack: () => void }) {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    // Faz a requisição GET para puxar os dados direto do Google Sheets
     fetch(GOOGLE_SCRIPT_URL)
       .then(res => res.json())
       .then(data => {
@@ -818,7 +817,6 @@ export default function App() {
     try {
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        // Nota: Mantemos no-cors para envio ou ajustamos caso o Google Script receba via JSONP/POST direto
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(submissionData),
