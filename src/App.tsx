@@ -12,7 +12,7 @@ import capaPrimeira from './assets/primeira.png';
 import capaAquiles from './assets/aquiles.png';
 
 // Import da trilha sonora da raiz do projeto
-import audioTrilha from '../enya.mp3';
+import audioTrilha from '../enya.mp3.mp3';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
