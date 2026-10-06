@@ -44,7 +44,7 @@ interface ParticipantRecord {
   date?: string;
 }
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5MdCtWdLosFL83yD4mOVwySBiMqGVMpJ_l7zU1xU/dev';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzI9pM9AfLm52_CbLFPmNGMkSlCjmb36LGwNu5pRQDgiar1JdLMGtprTsjK_KZMSrhy/exec';
 
 /* ─── Data: 15 Perguntas com 4 Opções Cada ───────────────────────────────── */
 
