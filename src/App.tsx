@@ -7,9 +7,6 @@ import capaPriorado from './assets/priorado.png';
 import capaCoracao from './assets/coracao.png';
 import capaNarnia from './assets/narnia.png';
 import capaInstrumentos from './assets/instrumentos.png';
-import capaMortal from './assets/mortal.png';
-import capaPrimeira from './assets/primeira.png';
-import capaAquiles from './assets/aquiles.png';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
@@ -47,7 +44,7 @@ interface ParticipantRecord {
   date?: string;
 }
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2lOopoqdZWV_ZW1N0rrrWu4MHQFh5qvd8z9_AynncX6WAduCH5oKRxeXBP6q-1DL_/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdTJhH0cNPc_3lryKA5GRjRoE4SYrUr5lN4ypBZLS6NZgX_TBJCpfaVW7PcSP3jwrq/exec';
 
 /* ─── Data: 15 Perguntas com 4 Opções Cada ───────────────────────────────── */
 
@@ -112,7 +109,7 @@ const questions: Question[] = [
     question: 'Qual artefato você escolheria?',
     subtitle: 'O objeto que carregaria em sua jornada final',
     options: [
-      { text: 'Uma espada lendária forjada sob estrelas divinas', icon: '🗡️', subgenre: 'epic' },
+      { text: 'Uma espada lendária forjada sob estrelas divinas', icon: '🗡️️', subgenre: 'epic' },
       { text: 'Um grimório de feitiços das trevas mais profundas', icon: '📓', subgenre: 'dark' },
       { text: 'Um amuleto que revela o invisível nas ruas da cidade', icon: '🔮', subgenre: 'urban' },
       { text: 'Uma bússola a vapor que aponta para reinos esquecidos', icon: '🧭', subgenre: 'steampunk' },
@@ -134,7 +131,7 @@ const questions: Question[] = [
     question: 'Qual o seu tipo de conflito favorito?',
     subtitle: 'A fagulha que acende a chama da narrativa',
     options: [
-      { text: 'Dilemas morais extremos onde ninguém sai totalmente ileso', icon: '⚖️', subgenre: 'grimdark' },
+      { text: 'Dilemas morais extremos onde ninguém sai totalmente ileso', icon: '⚖️️', subgenre: 'grimdark' },
       { text: 'Rivalidades mortais misturadas com paixões arrebatadoras', icon: '🔥', subgenre: 'romantasy' },
       { text: 'Confrontos diretos contra divindades e monstros mitológicos', icon: '🐉', subgenre: 'mythological' },
       { text: 'Invenções tecnológicas colidindo com forças arcanas', icon: '🔧', subgenre: 'steampunk' },
@@ -158,7 +155,7 @@ const questions: Question[] = [
     options: [
       { text: 'O destino é uma linha reta que devemos cumprir com honra', icon: '🛡️', subgenre: 'epic' },
       { text: 'O destino é uma piada cruel de deuses caprichosos', icon: '🎭', subgenre: 'mythological' },
-      { text: 'O destino pode ser reescrito através de alianças e sacrifícios', icon: '✍️️', subgenre: 'romantasy' },
+      { text: 'O destino pode ser reescrito através de alianças e sacrifícios', icon: '✍', subgenre: 'romantasy' },
       { text: 'O destino não existe; nós o forjamos nas trevas do presente', icon: '⚒️', subgenre: 'grimdark' },
     ],
   },
@@ -167,7 +164,7 @@ const questions: Question[] = [
     question: 'Qual paisagem desperta sua curiosidade?',
     subtitle: 'O cenário que captura seus pensamentos mais profundos',
     options: [
-      { text: 'Ruínas ancestrais cobertas por musgo e runas esquecidas', icon: '🏛️️', subgenre: 'historical' },
+      { text: 'Ruínas ancestrais cobertas por musgo e runas esquecidas', icon: '🏛', subgenre: 'historical' },
       { text: 'Cidades vertiginosas iluminadas a gás com dirigíveis no céu', icon: '🎈', subgenre: 'steampunk' },
       { text: 'Florestas encantadas onde árvores sussurram segredos antigos', icon: '🌲', subgenre: 'portal' },
       { text: 'Montanhas coroadas por tempestades e templos esquecidos', icon: '⛰️', subgenre: 'mythological' },
@@ -294,7 +291,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Realista', 'Sombrio', 'Desafiador', 'Cruel'],
     bookSuggestion: 'A Primeira Lei — Joe Abercrombie',
     bookSynopsis: 'Um inquisidor sádico, um bárbaro atormentado e um nobre arrogante cruzam seus caminhos.',
-    bookCover: capaPrimeira,
+    bookCover: capaCoracao,
     authors: 'Joe Abercrombie · George R.R. Martin · Mark Lawrence',
   },
   mythological: {
@@ -305,7 +302,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Divino', 'Épico', 'Lendário', 'Ancestral'],
     bookSuggestion: 'A Canção de Aquiles — Madeline Miller',
     bookSynopsis: 'A jornada mítica e trágica de dois jovens príncipes unidos pelo destino e pela guerra.',
-    bookCover: capaAquiles,
+    bookCover: capaTrono,
     authors: 'Madeline Miller · Rick Riordan · Neil Gaiman',
   },
   steampunk: {
@@ -316,7 +313,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Inventivo', 'Mecânico', 'Vitoriano', 'Visionário'],
     bookSuggestion: 'As Máquinas Mortais — Philip Reeve',
     bookSynopsis: 'Cidades sobre rodas vagando por um mundo devastado em busca de recursos.',
-    bookCover: capaMortal,
+    bookCover: capaPriorado,
     authors: 'Philip Reeve · China Miéville · Jules Verne',
   },
 };
@@ -529,7 +526,7 @@ function DevLoginSection({ onLoginSuccess, onBack }: { onLoginSuccess: () => voi
   );
 }
 
-function DevDashboardSection({ onBack }: { onBack: () => void }) {
+function DevDashboardSection({ onBack, onSelectSubgenre }: { onBack: () => void; onSelectSubgenre: (sub: Subgenre) => void }) {
   const [participants, setParticipants] = useState<ParticipantRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
@@ -553,6 +550,8 @@ function DevDashboardSection({ onBack }: { onBack: () => void }) {
       });
   }, []);
 
+  const subgenreKeys = Object.keys(subgenreResults) as Subgenre[];
+
   return (
     <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', padding: '3rem 1rem', display: 'flex', justifyContent: 'center' }}>
       <div style={{ maxWidth: '850px', width: '100%' }}>
@@ -560,50 +559,91 @@ function DevDashboardSection({ onBack }: { onBack: () => void }) {
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
             <Filigrana />
             <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2rem', margin: '1rem 0' }}>
-              Painel Dev: Dados do Google Sheets
+              Painel Dev: Dados & Subgêneros
             </h2>
             <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.9rem' }}>
-              Registros obtidos em tempo real direto da sua planilha integrada.
+              Visualize os registros da planilha e teste os resultados de cada subgênero clicando neles abaixo.
             </p>
             <GoldDivider glyph="📊" />
           </div>
 
-          <div style={{ maxHeight: '38vh', overflowY: 'auto', marginBottom: '1.5rem', border: '1px solid rgba(212,175,55,0.3)', padding: '10px', background: 'rgba(0,0,0,0.3)' }}>
-            {loading ? (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: '#E6C7C2', padding: '2rem' }}>
-                Carregando registros da planilha...
-              </p>
-            ) : errorMsg ? (
-              <p style={{ textAlign: 'center', color: '#ffb3b3', padding: '2rem' }}>
-                {errorMsg}
-              </p>
-            ) : participants.length === 0 ? (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: '#E6C7C2', padding: '2rem' }}>
-                Nenhum registro encontrado na planilha.
-              </p>
-            ) : (
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontFamily: 'Georgia, serif', fontSize: '0.9rem' }}>
-                <thead>
-                  <tr style={{ borderBottom: '1px solid #D4AF37', color: '#D4AF37' }}>
-                    <th style={{ padding: '8px' }}>Nome</th>
-                    <th style={{ padding: '8px' }}>Subgênero Registrado</th>
-                    <th style={{ padding: '8px' }}>Data / Hora</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {participants.map((p, idx) => (
-                    <tr key={idx} style={{ borderBottom: '1px solid rgba(212,175,55,0.1)', color: '#F5F3E7' }}>
-                      <td style={{ padding: '8px', fontWeight: 'bold' }}>{p.name}</td>
-                      <td style={{ padding: '8px', color: '#E6C7C2' }}>{p.subgenre}</td>
-                      <td style={{ padding: '8px', fontSize: '0.8rem', opacity: 0.8 }}>{p.date || '—'}</td>
+          {/* Tabela de Participantes */}
+          <div style={{ marginBottom: '2rem' }}>
+            <h3 style={{ color: '#D4AF37', fontFamily: 'Georgia, serif', fontSize: '1.1rem', marginBottom: '8px' }}>Participantes Registrados na Planilha:</h3>
+            <div style={{ maxHeight: '25vh', overflowY: 'auto', border: '1px solid rgba(212,175,55,0.3)', padding: '10px', background: 'rgba(0,0,0,0.3)' }}>
+              {loading ? (
+                <p style={{ textAlign: 'center', fontStyle: 'italic', color: '#E6C7C2', padding: '1rem' }}>
+                  Carregando registros da planilha...
+                </p>
+              ) : errorMsg ? (
+                <p style={{ textAlign: 'center', color: '#ffb3b3', padding: '1rem' }}>
+                  {errorMsg}
+                </p>
+              ) : participants.length === 0 ? (
+                <p style={{ textAlign: 'center', fontStyle: 'italic', color: '#E6C7C2', padding: '1rem' }}>
+                  Nenhum registro encontrado na planilha.
+                </p>
+              ) : (
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontFamily: 'Georgia, serif', fontSize: '0.85rem' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid #D4AF37', color: '#D4AF37' }}>
+                      <th style={{ padding: '6px' }}>Nome</th>
+                      <th style={{ padding: '6px' }}>Subgênero Registrado</th>
+                      <th style={{ padding: '6px' }}>Data / Hora</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
+                  </thead>
+                  <tbody>
+                    {participants.map((p, idx) => (
+                      <tr key={idx} style={{ borderBottom: '1px solid rgba(212,175,55,0.1)', color: '#F5F3E7' }}>
+                        <td style={{ padding: '6px', fontWeight: 'bold' }}>{p.name}</td>
+                        <td style={{ padding: '6px', color: '#E6C7C2' }}>{p.subgenre}</td>
+                        <td style={{ padding: '6px', fontSize: '0.75rem', opacity: 0.8 }}>{p.date || '—'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
+          {/* Lista de Subgêneros para Teste Rápido */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h3 style={{ color: '#D4AF37', fontFamily: 'Georgia, serif', fontSize: '1.1rem', marginBottom: '8px' }}>Testar Telas de Resultado por Subgênero:</h3>
+            <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.85rem', marginBottom: '12px' }}>
+              Clique em qualquer subgênero para abrir exatamente como ele aparece no fim do quiz:
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px' }}>
+              {subgenreKeys.map(key => {
+                const item = subgenreResults[key];
+                return (
+                  <button
+                    key={key}
+                    onClick={() => onSelectSubgenre(key)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      padding: '10px 14px',
+                      background: 'rgba(0,0,0,0.4)',
+                      border: '1px solid rgba(212,175,55,0.5)',
+                      color: '#F5F3E7',
+                      cursor: 'pointer',
+                      fontFamily: 'Georgia, serif',
+                      fontSize: '0.9rem',
+                      textAlign: 'left',
+                      borderRadius: '4px',
+                      transition: 'background 0.2s',
+                    }}
+                  >
+                    <span style={{ fontSize: '1.2rem' }}>{item.emblem}</span>
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.title}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
             <DiamondButton onClick={onBack} variant="secondary">Voltar ao Início</DiamondButton>
           </div>
         </ParchmentCard>
@@ -612,103 +652,208 @@ function DevDashboardSection({ onBack }: { onBack: () => void }) {
   );
 }
 
-function DiagnosticSection({ onSubmit, isSubmitting }: { onSubmit: (name: string) => void; isSubmitting: boolean }) {
+function QuizSection({ onComplete }: { onComplete: (result: Subgenre, name: string) => void }) {
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [answers, setAnswers] = useState<Subgenre[]>([]);
   const [name, setName] = useState('');
+  const [stepName, setStepName] = useState(true);
+  const [selectedOpt, setSelectedOpt] = useState<number | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const q = questions[currentIdx];
+
+  const handleNameSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || isSubmitting) return;
-    onSubmit(name);
+    if (name.trim()) setStepName(false);
   };
+
+  const handleSelectOption = (subgenre: Subgenre, optIdx: number) => {
+    setSelectedOpt(optIdx);
+    setTimeout(() => {
+      const nextAnswers = [...answers, subgenre];
+      setAnswers(nextAnswers);
+      setSelectedOpt(null);
+      if (currentIdx + 1 < questions.length) {
+        setCurrentIdx(currentIdx + 1);
+      } else {
+        const finalSubgenre = calculateResult(nextAnswers);
+        onComplete(finalSubgenre, name);
+      }
+    }, 350);
+  };
+
+  if (stepName) {
+    return (
+      <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+        <ParchmentCard style={{ maxWidth: '500px', width: '100%', textAlign: 'center' }}>
+          <Filigrana />
+          <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '1.8rem', margin: '1.2rem 0' }}>
+            Como os bardos devem te chamar?
+          </h2>
+          <GoldDivider glyph="✒️" />
+          <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
+            Insira seu nome para registrar sua jornada nos anais do reino.
+          </p>
+          <form onSubmit={handleNameSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <input
+              type="text"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              placeholder="Seu nome ou alcunha..."
+              required
+              style={{ width: '100%', padding: '12px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif', fontSize: '1rem', textAlign: 'center' }}
+            />
+            <div style={{ marginTop: '1rem' }}>
+              <DiamondButton type="submit" variant="primary">Prosseguir à Senda</DiamondButton>
+            </div>
+          </form>
+        </ParchmentCard>
+      </main>
+    );
+  }
+
+  return (
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <div style={{ maxWidth: '650px', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#D4AF37', fontFamily: 'Georgia, serif', marginBottom: '0.8rem', fontSize: '0.9rem' }}>
+          <span>Viajante: <strong>{name}</strong></span>
+          <span>Questão {currentIdx + 1} de {questions.length}</span>
+        </div>
+        <div style={{ width: '100%', height: '4px', background: 'rgba(212,175,55,0.2)', marginBottom: '1.5rem', borderRadius: '2px', overflow: 'hidden' }}>
+          <div style={{ width: `${((currentIdx + 1) / questions.length) * 100}%`, height: '100%', background: '#D4AF37', transition: 'width 0.3s ease' }} />
+        </div>
+
+        <ParchmentCard>
+          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+            <span style={{ fontSize: '1.8rem' }}>{q.options[0]?.icon || '✨'}</span>
+            <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '1.5rem', margin: '0.8rem 0 0.4rem 0' }}>
+              {q.question}
+            </h2>
+            <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.9rem' }}>{q.subtitle}</p>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {q.options.map((opt, idx) => {
+              const isSelected = selectedOpt === idx;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handleSelectOption(opt.subgenre, idx)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '15px',
+                    padding: '14px 18px',
+                    background: isSelected ? 'rgba(86,3,25,0.8)' : 'rgba(0,0,0,0.3)',
+                    border: '1px solid rgba(212,175,55,0.5)',
+                    color: '#F5F3E7',
+                    textAlign: 'left',
+                    fontFamily: 'Georgia, serif',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    borderRadius: '4px',
+                  }}
+                >
+                  <span style={{ fontSize: '1.2rem' }}>{opt.icon}</span>
+                  <span>{opt.text}</span>
+                </button>
+              );
+            })}
+          </div>
+        </ParchmentCard>
+      </div>
+    </main>
+  );
+}
+
+function DiagnosticSection({ participantName, subgenre, onNext }: { participantName: string; subgenre: Subgenre; onNext: () => void }) {
+  const info = subgenreResults[subgenre];
 
   return (
     <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
-      <ParchmentCard style={{ maxWidth: '500px', width: '100%', textAlign: 'center' }}>
+      <ParchmentCard style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
         <Filigrana />
         <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2rem', margin: '1.2rem 0' }}>
-          Registo de Viajante
+          O Oráculo Revelou seu Destino, {participantName}
         </h2>
-        <GoldDivider glyph="◆" />
-        <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
-          Insira o seu nome para que os anais do reino registem o seu diagnóstico místico.
+        <GoldDivider glyph={info.emblem} />
+        <div style={{ margin: '1.5rem 0' }}>
+          <span style={{ fontSize: '3rem', display: 'block', marginBottom: '0.5rem' }}>{info.emblem}</span>
+          <h3 style={{ fontFamily: 'Georgia, serif', color: '#D4AF37', fontSize: '1.6rem' }}>{info.title}</h3>
+          <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '1rem', marginTop: '0.3rem' }}>{info.subtitle}</p>
+        </div>
+        <p style={{ fontFamily: 'Georgia, serif', color: '#F5F3E7', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+          {info.description}
         </p>
-        
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', textAlign: 'left' }}>
-          <div>
-            <label style={{ display: 'block', color: '#D4AF37', fontSize: '0.85rem', marginBottom: '5px', fontFamily: 'Georgia, serif' }}>Seu Nome:</label>
-            <input 
-              type="text" 
-              value={name} 
-              onChange={e => setName(e.target.value)} 
-              required
-              disabled={isSubmitting}
-              placeholder="O seu nome..."
-              style={{ width: '100%', padding: '10px', background: 'rgba(0,0,0,0.4)', border: '1px solid #D4AF37', color: '#F5F3E7', borderRadius: '4px', fontFamily: 'Georgia, serif' }}
-            />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
-            <DiamondButton type="submit" variant="primary" wide disabled={isSubmitting}>
-              {isSubmitting ? 'A enviar para Planilha...' : 'Revelar Destino'}
-            </DiamondButton>
-          </div>
-        </form>
+        <DiamondButton onClick={onNext} variant="primary">Ver Detalhes do Reino & Livro Guia</DiamondButton>
       </ParchmentCard>
     </main>
   );
 }
 
-function QuizSection({ question, questionIndex, total, selected, onSelect, onNext }: any) {
-  const isLast = questionIndex === total - 1;
-  const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
+function ResultSection({ participantName, subgenre, onRestart, isDevPreview = false }: { participantName: string; subgenre: Subgenre; onRestart: () => void; isDevPreview?: boolean }) {
+  const info = subgenreResults[subgenre];
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(isDevPreview); // Se for preview dev, não precisa salvar duplicado
+
+  useEffect(() => {
+    if (!saved && !saving && !isDevPreview) {
+      setSaving(true);
+      const params = new URLSearchParams({ name: participantName, subgenre: info.title });
+      fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`)
+        .then(() => setSaved(true))
+        .catch(err => console.error("Erro ao salvar na planilha:", err))
+        .finally(() => setSaving(false));
+    }
+  }, [participantName, info.title, saved, saving, isDevPreview]);
 
   return (
-    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
-      <div style={{ maxWidth: '620px', width: '100%' }}>
-        <p style={{ textAlign: 'center', color: '#D4AF37', fontSize: '0.8rem', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1rem', fontFamily: "Georgia, serif" }}>
-          Pergunta {questionIndex + 1} de {total}
-        </p>
+    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', padding: '3rem 1rem', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ maxWidth: '750px', width: '100%' }}>
         <ParchmentCard>
-          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: "Georgia, serif", color: '#F5F3E7', fontSize: '1.85rem', margin: 0, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
-              {question.question}
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <Filigrana />
+            <h2 style={{ fontFamily: 'Georgia, serif', color: '#D4AF37', fontSize: '2.2rem', margin: '1rem 0' }}>
+              {info.title} {isDevPreview && '(Modo de Visualização Dev)'}
             </h2>
-            <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.95rem', marginTop: '6px' }}>{question.subtitle}</p>
-            <GoldDivider glyph="◆" />
+            <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '1.1rem' }}>{info.subtitle}</p>
+            <GoldDivider glyph={info.emblem} />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {question.options.map((opt: any, idx: number) => {
-              const isSelected = selected === opt.subgenre;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => onSelect(opt.subgenre)}
-                  style={{
-                    width: '100%',
-                    textAlign: 'left',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '14px',
-                    padding: '14px 18px',
-                    background: isSelected ? 'linear-gradient(135deg, #4B5320 0%, #2c3212 100%)' : 'rgba(35, 18, 24, 0.7)',
-                    border: isSelected ? '1.5px solid #D4AF37' : '1px solid rgba(212,175,55,0.3)',
-                    cursor: 'pointer',
-                    color: isSelected ? '#F5F3E7' : '#E6C7C2',
-                    fontFamily: "Georgia, serif",
-                    fontSize: '1.05rem',
-                    boxShadow: isSelected ? '0 4px 15px rgba(75,83,32,0.4)' : 'none',
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  <span style={{ fontWeight: 'bold', color: '#D4AF37' }}>{OPTION_LETTERS[idx]}.</span>
-                  <span style={{ fontSize: '1.2rem' }}>{opt.icon}</span>
-                  <span style={{ fontStyle: 'italic' }}>{opt.text}</span>
-                </button>
-              );
-            })}
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '2rem', alignItems: 'center', marginBottom: '2rem' }}>
+            <div style={{ textAlign: 'center' }}>
+              <img
+                src={info.bookCover}
+                alt={info.bookSuggestion}
+                style={{ width: '100%', maxWidth: '200px', border: '2px solid #D4AF37', boxShadow: '0 8px 25px rgba(0,0,0,0.6)', borderRadius: '4px' }}
+              />
+            </div>
+            <div>
+              <h4 style={{ color: '#D4AF37', fontFamily: 'Georgia, serif', fontSize: '1.1rem', marginBottom: '0.4rem' }}>Livro Recomendado:</h4>
+              <p style={{ fontFamily: 'Georgia, serif', fontSize: '1.15rem', fontWeight: 'bold', marginBottom: '0.6rem' }}>{info.bookSuggestion}</p>
+              <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.9rem', marginBottom: '1.0rem', lineHeight: 1.5 }}>"{info.bookSynopsis}"</p>
+              <h5 style={{ color: '#D4AF37', fontFamily: 'Georgia, serif', fontSize: '0.85rem', marginBottom: '0.2rem' }}>Grandes Autores:</h5>
+              <p style={{ fontSize: '0.9rem', color: '#F5F3E7', opacity: 0.9 }}>{info.authors}</p>
+            </div>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-            <DiamondButton onClick={onNext} variant="secondary" disabled={!selected}>
-              {isLast ? 'Prosseguir para Registo' : 'Próxima Pergunta'}
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center', marginBottom: '2rem' }}>
+            {info.traits.map((trait, idx) => (
+              <span key={idx} style={{ background: 'rgba(212,175,55,0.150)', border: '1px solid #D4AF37', color: '#D4AF37', padding: '4px 12px', fontSize: '0.85rem', fontFamily: 'Georgia, serif', borderRadius: '2px' }}>
+                {trait}
+              </span>
+            ))}
+          </div>
+
+          {!isDevPreview && (
+            <div style={{ textAlign: 'center', fontSize: '0.85rem', fontStyle: 'italic', color: '#E6C7C2', marginBottom: '1.5rem' }}>
+              {saving ? 'Registrando sua jornada na planilha...' : saved ? '✦ Sua jornada foi eternizada com sucesso!' : ''}
+            </div>
+          )}
+
+          <div style={{ textAlign: 'center' }}>
+            <DiamondButton onClick={onRestart} variant="primary">
+              {isDevPreview ? 'Voltar ao Painel Dev' : 'Refazer Jornada'}
             </DiamondButton>
           </div>
         </ParchmentCard>
@@ -717,178 +862,34 @@ function QuizSection({ question, questionIndex, total, selected, onSelect, onNex
   );
 }
 
-function ResultSection({ result, onReset }: any) {
-  return (
-    <main style={{ background: 'radial-gradient(circle at center, #2c0b16 0%, #0c090a 100%)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
-      <ParchmentCard style={{ maxWidth: '640px', width: '100%', textAlign: 'center' }}>
-        <div style={{ fontSize: '3.2rem', marginBottom: '0.2rem', filter: 'drop-shadow(0 2px 8px rgba(212,175,55,0.4))' }}>{result.emblem}</div>
-        <Filigrana />
-        <h2 style={{ fontFamily: "Georgia, serif", color: '#D4AF37', fontSize: '2.5rem', margin: '0.5rem 0' }}>{result.title}</h2>
-        <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '1.05rem', marginBottom: '1rem' }}>{result.subtitle}</p>
-        
-        <GoldDivider glyph="◆ ◆ ◆" />
-        
-        <p style={{ fontStyle: 'italic', color: '#F5F3E7', lineHeight: '1.7', textAlign: 'left', margin: '1.2rem 0', fontSize: '1.05rem' }}>
-          {result.description}
-        </p>
-
-        <div style={{ margin: '2rem 0 1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <p style={{ fontSize: '0.8rem', color: '#D4AF37', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '10px', fontWeight: 'bold' }}>
-            ✦ Obra Recomendada ✦
-          </p>
-          <div style={{ position: 'relative', padding: '6px', background: 'rgba(212, 175, 55, 0.1)', border: '1px solid #D4AF37', boxShadow: '0 8px 25px rgba(0,0,0,0.6)' }}>
-            <img 
-              src={result.bookCover} 
-              alt={result.bookSuggestion} 
-              style={{ width: '150px', height: '220px', objectFit: 'cover', display: 'block' }} 
-            />
-          </div>
-          
-          <h3 style={{ fontFamily: "Georgia, serif", fontSize: '1.35rem', color: '#D4AF37', fontWeight: 'bold', marginTop: '14px', marginBottom: '8px' }}>
-            {result.bookSuggestion}
-          </h3>
-
-          <p style={{ fontStyle: 'italic', color: '#E6C7C2', fontSize: '0.98rem', lineHeight: '1.6', maxWidth: '520px', margin: '0 auto', textAlign: 'center', background: 'rgba(86, 3, 25, 0.3)', padding: '12px 16px', borderLeft: '2px solid #D4AF37', borderRight: '2px solid #D4AF37' }}>
-            "{result.bookSynopsis}"
-          </p>
-        </div>
-
-        <p style={{ fontSize: '0.9rem', color: '#bfa89b', fontStyle: 'italic', margin: '1.5rem 0 1rem' }}>Autores essenciais: {result.authors}</p>
-        
-        <Filigrana flip />
-        <div style={{ marginTop: '1.8rem' }}>
-          <DiamondButton onClick={onReset} variant="primary">Refazer o Quiz</DiamondButton>
-        </div>
-      </ParchmentCard>
-    </main>
-  );
-}
-
 export default function App() {
   const [screen, setScreen] = useState<Screen>('hero');
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Subgenre[]>([]);
-  const [selected, setSelected] = useState<Subgenre | null>(null);
-  const [result, setResult] = useState<SubgenreResult | null>(null);
-  const [pendingWinner, setPendingWinner] = useState<Subgenre | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [participantName, setParticipantName] = useState('');
+  const [userSubgenre, setUserSubgenre] = useState<Subgenre>('epic');
+  const [isDevPreview, setIsDevPreview] = useState(false);
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const handleQuizComplete = (subgenre: Subgenre, name: string) => {
+    setUserSubgenre(subgenre);
+    setParticipantName(name);
+    setIsDevPreview(false);
+    setScreen('diagnostic');
+  };
 
-  function startQuiz() {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.volume = 0.4;
-      audioRef.current.play().catch(err => {
-        console.warn("Reprodução automática impedida pelo navegador:", err);
-      });
-    }
-
-    setScreen('quiz');
-    setQuestionIndex(0);
-    setAnswers([]);
-    setSelected(null);
-    setPendingWinner(null);
-  }
-
-  function handleNext() {
-    if (!selected) return;
-    const updated = [...answers, selected];
-
-    if (questionIndex < questions.length - 1) {
-      setAnswers(updated);
-      setQuestionIndex(i => i + 1);
-      setSelected(null);
-    } else {
-      const winner = calculateResult(updated);
-      setPendingWinner(winner);
-      setScreen('diagnostic');
-    }
-  }
-
-  async function handleDiagnosticSubmit(name: string) {
-    if (!pendingWinner || isSubmitting) return;
-
-    setIsSubmitting(true);
-    const winnerResult = subgenreResults[pendingWinner];
-
-    const submissionData = {
-      name,
-      subgenreResult: winnerResult.title,
-    };
-
-    try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submissionData),
-      });
-    } catch (error) {
-      console.error('Erro ao enviar dados para a planilha:', error);
-    } finally {
-      setIsSubmitting(false);
-      setResult(winnerResult);
-      setScreen('result');
-    }
-  }
-
-  function resetQuiz() {
-    setScreen('hero');
-    setQuestionIndex(0);
-    setAnswers([]);
-    setSelected(null);
-    setResult(null);
-    setPendingWinner(null);
-  }
+  const handleDevSelectSubgenre = (sub: Subgenre) => {
+    setUserSubgenre(sub);
+    setParticipantName('Programadora');
+    setIsDevPreview(true);
+    setScreen('result');
+  };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0c090a' }}>
-      <audio 
-        ref={audioRef} 
-        src="/enya.mp3" 
-        loop 
-        preload="auto"
-      />
-
-      {screen === 'hero' && (
-        <HeroSection 
-          onStart={startQuiz} 
-          onDevAccess={() => setScreen('dev-login')} 
-        />
-      )}
-
-      {screen === 'dev-login' && (
-        <DevLoginSection 
-          onLoginSuccess={() => setScreen('dev-dashboard')} 
-          onBack={() => setScreen('hero')} 
-        />
-      )}
-
-      {screen === 'dev-dashboard' && (
-        <DevDashboardSection 
-          onBack={() => setScreen('hero')} 
-        />
-      )}
-
-      {screen === 'quiz' && (
-        <QuizSection
-          question={questions[questionIndex]}
-          questionIndex={questionIndex}
-          total={questions.length}
-          selected={selected}
-          onSelect={setSelected}
-          onNext={handleNext}
-        />
-      )}
-
-      {screen === 'diagnostic' && (
-        <DiagnosticSection onSubmit={handleDiagnosticSubmit} isSubmitting={isSubmitting} />
-      )}
-
-      {screen === 'result' && result && (
-        <ResultSection result={result} onReset={resetQuiz} />
-      )}
-    </div>
+    <>
+      {screen === 'hero' && <HeroSection onStart={() => setScreen('quiz')} onDevAccess={() => setScreen('dev-login')} />}
+      {screen === 'dev-login' && <DevLoginSection onLoginSuccess={() => setScreen('dev-dashboard')} onBack={() => setScreen('hero')} />}
+      {screen === 'dev-dashboard' && <DevDashboardSection onBack={() => setScreen('hero')} onSelectSubgenre={handleDevSelectSubgenre} />}
+      {screen === 'quiz' && <QuizSection onComplete={handleQuizComplete} />}
+      {screen === 'diagnostic' && <DiagnosticSection participantName={participantName} subgenre={userSubgenre} onNext={() => setScreen('result')} />}
+      {screen === 'result' && <ResultSection participantName={participantName} subgenre={userSubgenre} onRestart={() => isDevPreview ? setScreen('dev-dashboard') : setScreen('hero')} isDevPreview={isDevPreview} />}
+    </>
   );
 }
