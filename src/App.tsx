@@ -11,7 +11,7 @@ import capaInstrumentos from './assets/instrumentos.png';
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
 type Screen = 'hero' | 'quiz' | 'diagnostic' | 'result';
-type Subgenre = 'epic' | 'dark' | 'urban' | 'romantasy' | 'historical' | 'portal';
+type Subgenre = 'epic' | 'dark' | 'urban' | 'romantasy' | 'historical' | 'portal' | 'grimdark' | 'mythological' | 'steampunk';
 
 interface Option {
   text: string;
@@ -38,7 +38,7 @@ interface SubgenreResult {
   authors: string;
 }
 
-/* ─── Data ───────────────────────────────────────────────────────────────── */
+/* ─── Data: 15 Perguntas com 4 Opções Cada ───────────────────────────────── */
 
 const questions: Question[] = [
   {
@@ -68,10 +68,10 @@ const questions: Question[] = [
     question: 'Quem caminha ao seu lado?',
     subtitle: 'O companheiro escolhido é o espelho da sua alma',
     options: [
-      { text: 'Um demônio que selou um pacto contigo no passado', icon: '😈', subgenre: 'dark' },
+      { text: 'Um demônio que selou um pacto contigo no passado', icon: '😈', subgenre: 'grimdark' },
       { text: 'Um detetive sobrenatural que decifra os segredos da cidade', icon: '🔍', subgenre: 'urban' },
       { text: 'Um príncipe ou princesa de um reino rival', icon: '👑', subgenre: 'romantasy' },
-      { text: 'Um cavaleiro de uma ordem esquecida pela história', icon: '🛡️', subgenre: 'historical' },
+      { text: 'Um inventor engenhoso com óculos de aviador e engrenagens', icon: '⚙️', subgenre: 'steampunk' },
     ],
   },
   {
@@ -92,7 +92,7 @@ const questions: Question[] = [
     options: [
       { text: 'Com feitiços proibidos e um coração despedaçado', icon: '💔', subgenre: 'dark' },
       { text: 'Com a força do amor e uma aliança improvável', icon: '🌹', subgenre: 'romantasy' },
-      { text: 'Usando magia antiga aprendida de grimorios medievais', icon: '📖', subgenre: 'historical' },
+      { text: 'Usando magia antiga aprendida de grimórios medievais', icon: '📖', subgenre: 'historical' },
       { text: 'Atravessando portais para buscar aliados em outros mundos', icon: '🌀', subgenre: 'portal' },
     ],
   },
@@ -104,7 +104,106 @@ const questions: Question[] = [
       { text: 'Uma espada lendária forjada sob estrelas divinas', icon: '🗡️', subgenre: 'epic' },
       { text: 'Um grimório de feitiços das trevas mais profundas', icon: '📓', subgenre: 'dark' },
       { text: 'Um amuleto que revela o invisível nas ruas da cidade', icon: '🔮', subgenre: 'urban' },
-      { text: 'Um mapa que conduz a reinos além das estrelas', icon: '🗺️', subgenre: 'portal' },
+      { text: 'Uma bússola a vapor que aponta para reinos esquecidos', icon: '🧭', subgenre: 'steampunk' },
+    ],
+  },
+  {
+    id: 7,
+    question: 'Qual é o seu refúgio secreto?',
+    subtitle: 'O lugar onde você busca paz quando o mundo desaba',
+    options: [
+      { text: 'O topo de uma montanha sagrada sob o olhar de deuses antigos', icon: '⚡', subgenre: 'mythological' },
+      { text: 'Uma biblioteca subterrânea esquecida pelo tempo', icon: '📚', subgenre: 'historical' },
+      { text: 'Uma torre sombria isolada em um pântano perpétuo', icon: '🏰', subgenre: 'grimdark' },
+      { text: 'Um café aconchegante em uma esquina chuvosa', icon: '☕', subgenre: 'urban' },
+    ],
+  },
+  {
+    id: 8,
+    question: 'Qual o seu tipo de conflito favorito?',
+    subtitle: 'A fagulha que acende a chama da narrativa',
+    options: [
+      { text: 'Dilemas morais extremos onde ninguém sai totalmente ileso', icon: '⚖️', subgenre: 'grimdark' },
+      { text: 'Rivalidades mortais misturadas com paixões arrebatadoras', icon: '🔥', subgenre: 'romantasy' },
+      { text: 'Confrontos diretos contra divindades e monstros mitológicos', icon: '🐉', subgenre: 'mythological' },
+      { text: 'Invenções tecnológicas colidindo com forças arcanas', icon: '🔧', subgenre: 'steampunk' },
+    ],
+  },
+  {
+    id: 9,
+    question: 'Como a magia se manifesta ao seu redor?',
+    subtitle: 'A assinatura energética da sua essência',
+    options: [
+      { text: 'Como um clarão de luz pura que altera o tecido da realidade', icon: '✨', subgenre: 'portal' },
+      { text: 'Como fumaça densa e sussurros vindos do além-túmulo', icon: '💨', subgenre: 'dark' },
+      { text: 'Como faíscas elétricas saindo de engenharias a vapor', icon: '⚡', subgenre: 'steampunk' },
+      { text: 'Como um fogo interior alimentado por juramentos de sangue', icon: '❤️‍🔥', subgenre: 'romantasy' },
+    ],
+  },
+  {
+    id: 10,
+    question: 'Qual é a sua relação com o destino?',
+    subtitle: 'A forma como você enxerga o futuro escrito nas estrelas',
+    options: [
+      { text: 'O destino é uma linha reta que devemos cumprir com honra', icon: '🛡️', subgenre: 'epic' },
+      { text: 'O destino é uma piada cruel de deuses caprichosos', icon: '🎭', subgenre: 'mythological' },
+      { text: 'O destino pode ser reescrito através de alianças e sacrifícios', icon: '✍️', subgenre: 'romantasy' },
+      { text: 'O destino não existe; nós o forjamos nas trevas do presente', icon: '⚒️', subgenre: 'grimdark' },
+    ],
+  },
+  {
+    id: 11,
+    question: 'Qual paisagem desperta sua curiosidade?',
+    subtitle: 'O cenário que captura seus pensamentos mais profundos',
+    options: [
+      { text: 'Ruínas ancestrais cobertas por musgo e runas esquecidas', icon: '🏛️', subgenre: 'historical' },
+      { text: 'Cidades vertiginosas iluminadas a gás com dirigíveis no céu', icon: '🎈', subgenre: 'steampunk' },
+      { text: 'Florestas encantadas onde árvores sussurram segredos antigos', icon: '🌲', subgenre: 'portal' },
+      { text: 'Montanhas coroadas por tempestades e templos esquecidos', icon: '⛰️', subgenre: 'mythological' },
+    ],
+  },
+  {
+    id: 12,
+    question: 'O que você mais teme encontrar?',
+    subtitle: 'O abismo que olha de volta para você',
+    options: [
+      { text: 'A traição daqueles em quem você jurou confiar cegamente', icon: '🗡️', subgenre: 'grimdark' },
+      { text: 'O esquecimento eterno e a perda de todas as memórias', icon: '⏳', subgenre: 'historical' },
+      { text: 'A corrupção total da alma por forças que não pode controlar', icon: '👁️', subgenre: 'dark' },
+      { text: 'Ficar preso para sempre em um mundo que não é o seu', icon: '🚪', subgenre: 'portal' },
+    ],
+  },
+  {
+    id: 13,
+    question: 'Qual é o seu estilo de combate preferido?',
+    subtitle: 'A dança mortal que você executa no calor da crise',
+    options: [
+      { text: 'Estratégia militar impecável em campos de batalha abertos', icon: '🚩', subgenre: 'epic' },
+      { text: 'Astúcia rápida, punhais ocultos e sombras protetoras', icon: '🗡️', subgenre: 'urban' },
+      { text: 'Invocações divinas e bênçãos de panteões antigos', icon: '🔱', subgenre: 'mythological' },
+      { text: 'Uso de engenhocas mecânicas e pistolas de repetição arcana', icon: '🔫', subgenre: 'steampunk' },
+    ],
+  },
+  {
+    id: 14,
+    question: 'Como você prefere que termine sua jornada?',
+    subtitle: 'O eco que sua lenda deixará para a posteridade',
+    options: [
+      { text: 'Transformado em um mito cantado por bardos por gerações', icon: '🎶', subgenre: 'epic' },
+      { text: 'Encontrando o amor verdadeiro e construindo um novo reino', icon: '🏰', subgenre: 'romantasy' },
+      { text: 'Sobrevivendo às cinzas de um mundo implacável, ainda de pé', icon: '🔥', subgenre: 'grimdark' },
+      { text: 'Voltando para casa transformado por uma sabedoria secreta', icon: '🏡', subgenre: 'portal' },
+    ],
+  },
+  {
+    id: 15,
+    question: 'Qual destas frases melhor define o seu lema de vida?',
+    subtitle: 'A última palavra antes da grande decisão',
+    options: [
+      { text: '“O sangue dos inocentes clama por justiça nas trevas.”', icon: '🩸', subgenre: 'grimdark' },
+      { text: '“Mesmo entre deuses e monstros, o amor é a única força indomável.”', icon: '💖', subgenre: 'romantasy' },
+      { text: '“A engrenagem gira, o vapor sobe e o destino é construído por nossas mãos.”', icon: '⚙️', subgenre: 'steampunk' },
+      { text: '“Os mitos nunca morrem; eles apenas aguardam quem ouse chamá-los.”', icon: '🌟', subgenre: 'mythological' },
     ],
   },
 ];
@@ -113,7 +212,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
   epic: {
     title: 'Alta Fantasia Épica',
     subtitle: 'Reinos Imortais & Profecias das Eras',
-    description: 'Sua alma pulsa com o ritmo das batalhas eternas. Você é feito de lendas e estrelas.',
+    description: 'Sua alma pulsa com o ritmo das batalhas eternas. Você é feito de lendas, honra e estrelas.',
     emblem: '⚔️',
     traits: ['Grandioso', 'Épico', 'Mitológico', 'Profético'],
     bookSuggestion: 'Trono de Vidro — Sarah J. Maas',
@@ -124,7 +223,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
   dark: {
     title: 'Fantasia Sombria',
     subtitle: 'Fronteiras entre o Crepúsculo e o Abismo',
-    description: 'As trevas não te assustam — elas te fascinam. Você caminha nas bordas do mundo.',
+    description: 'As trevas não te assustam — elas te fascinam. Você caminha nas bordas perigosas do mundo.',
     emblem: '🖤',
     traits: ['Sombrio', 'Visceral', 'Intenso', 'Complexo'],
     bookSuggestion: 'Coração Lascivo',
@@ -135,52 +234,85 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
   urban: {
     title: 'Fantasia Urbana',
     subtitle: 'Ruas Encantadas de Metrópoles Secretas',
-    description: 'Você enxerga o que os outros ignoram — a magia escondida nos becos da cidade.',
+    description: 'Você enxerga o que os outros ignoram — a magia escondida nos becos e neons da cidade grande.',
     emblem: '🌃',
     traits: ['Contemporâneo', 'Misterioso', 'Dualista', 'Perspicaz'],
     bookSuggestion: 'Cidade dos Ossos (Os Instrumentos Mortais)',
-    bookSynopsis: 'Clary Fray testemunha um assassinato cometido por jovens cobertos de tatuagens.',
+    bookSynopsis: 'Clary Fray testemunha um assassinato cometido por jovens cobertos de tatuagens arcanas.',
     bookCover: capaInstrumentos,
     authors: 'Neil Gaiman · Cassandra Clare · Jim Butcher',
   },
   romantasy: {
     title: 'Romantasy',
     subtitle: 'Reinos onde o Amor é a Maior das Magias',
-    description: 'Para você, nenhuma batalha épica supera a tensão de dois corações destinados.',
+    description: 'Para você, nenhuma batalha épica supera a tensão inegável de dois corações destinados.',
     emblem: '🌹',
     traits: ['Apaixonado', 'Intenso', 'Mágico', 'Emotivo'],
     bookSuggestion: 'Corte de Rosas e Espinhos — Sarah J. Maas',
-    bookSynopsis: 'Ao matar uma lobalsa na floresta, Feyre é levada a uma terra mágica.',
+    bookSynopsis: 'Ao matar uma loba na floresta, Feyre é levada a uma terra mágica repleta de perigos e paixão.',
     bookCover: capaCorte,
     authors: 'Sarah J. Maas · Rebecca Yarros · Holly Black',
   },
   historical: {
     title: 'Fantasia Histórica',
     subtitle: 'Eras Perdidas onde a Magia Moldou a História',
-    description: 'Você sente o cheiro de pergaminhos antigos e escuta o sussurro de civilizações.',
+    description: 'Você sente o cheiro de pergaminhos antigos e escuta o sussurro de civilizações esquecidas.',
     emblem: '🕯️',
     traits: ['Histórico', 'Ritualístico', 'Atmosférico', 'Erudito'],
     bookSuggestion: 'O Priorado da Laranjeira — Samantha Shannon',
-    bookSynopsis: 'Um mundo dividedo e ameaçado por um despertar dracônico ancestral.',
+    bookSynopsis: 'Um mundo dividido e ameaçado por um despertar dracônico ancestral.',
     bookCover: capaPriorado,
     authors: 'Susanna Clarke · Naomi Novik · Samantha Shannon',
   },
   portal: {
     title: 'Fantasia de Portal',
     subtitle: 'Além — nos Mundos do Outro Lado do Espelho',
-    description: 'Você sempre olhou para espelhos, armários e fontes antigas com uma pergunta.',
+    description: 'Você sempre olhou para espelhos, armários e fontes antigas com uma pergunta cheia de esperança.',
     emblem: '🌀',
     traits: ['Maravilhoso', 'Transformador', 'Descoberta', 'Reinvenção'],
     bookSuggestion: 'As Crônicas de Nárnia — C.S. Lewis',
-    bookSynopsis: 'Através de um guarda-roupa empoeirado, irmãos comuns entram em um mundo mágico.',
+    bookSynopsis: 'Através de um guarda-roupa empoeirado, irmãos comuns entram em um mundo mágico e congelado.',
     bookCover: capaNarnia,
     authors: 'C.S. Lewis · Lev Grossman · Seanan McGuire',
+  },
+  grimdark: {
+    title: 'Grimdark',
+    subtitle: 'Honra Sangrenta em Mundos Implacáveis',
+    description: 'Para você, o mundo não é preto no branco. A sobrevivência exige escolhas duras e cicatrizes na alma.',
+    emblem: '🗡️',
+    traits: ['Realista', 'Sombrio', 'Desafiador', 'Cruel'],
+    bookSuggestion: 'A Primeira Lei — Joe Abercrombie',
+    bookSynopsis: 'Um inquisidor sádico, um bárbaro atormentado e um nobre arrogante cruzam seus caminhos.',
+    bookCover: capaCoracao,
+    authors: 'Joe Abercrombie · George R.R. Martin · Mark Lawrence',
+  },
+  mythological: {
+    title: 'Fantasia Mitológica',
+    subtitle: 'Fúria dos Deuses & Panteões Ancestrais',
+    description: 'Seu espírito caminha entre altares e colossos, onde heróis desafiam oráculos e divindades.',
+    emblem: '⚡',
+    traits: ['Divino', 'Épico', 'Lendário', 'Ancestral'],
+    bookSuggestion: 'A Canção de Aquiles — Madeline Miller',
+    bookSynopsis: 'A jornada mítica e trágica de dois jovens príncipes unidos pelo destino e pela guerra.',
+    bookCover: capaTrono,
+    authors: 'Madeline Miller · Rick Riordan · Neil Gaiman',
+  },
+  steampunk: {
+    title: 'Steampunk & Fantasia a Vapor',
+    subtitle: 'Engrenagens, Magia Arcana e Dirigíveis',
+    description: 'Você une o místico ao industrial, criando maravilhas tecnológicas impulsionadas a vapor e eletricidade.',
+    emblem: '⚙️',
+    traits: ['Inventivo', 'Mecânico', 'Vitoriano', 'Visionário'],
+    bookSuggestion: 'As Máquinas Mortais — Philip Reeve',
+    bookSynopsis: 'Cidades sobre rodas vagando por um mundo devastado em busca de recursos.',
+    bookCover: capaPriorado,
+    authors: 'Philip Reeve · China Miéville · Jules Verne',
   },
 };
 
 function calculateResult(answers: Subgenre[]): Subgenre {
   const scores: Record<Subgenre, number> = {
-    epic: 0, dark: 0, urban: 0, romantasy: 0, historical: 0, portal: 0,
+    epic: 0, dark: 0, urban: 0, romantasy: 0, historical: 0, portal: 0, grimdark: 0, mythological: 0, steampunk: 0,
   };
   answers.forEach(a => scores[a]++);
   return Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0] as Subgenre;
@@ -316,7 +448,7 @@ function HeroSection({ onStart }: { onStart: () => void }) {
         </h2>
         <GoldDivider />
         <p style={{ fontFamily: "Georgia, serif", fontStyle: 'italic', color: '#E6C7C2', fontSize: '1.15rem', margin: '1.5rem 0', lineHeight: 1.6 }}>
-          Responda a 6 perguntas sob o véu do mistério e descubra a qual mundo literário a sua alma pertence.
+          Responda às 15 perguntas sob o véu do mistério e descubra a qual mundo literário a sua alma pertence.
         </p>
         <Filigrana flip />
         <div style={{ marginTop: '1.8rem' }}>
