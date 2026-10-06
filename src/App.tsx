@@ -7,6 +7,9 @@ import capaPriorado from './assets/priorado.png';
 import capaCoracao from './assets/coracao.png';
 import capaNarnia from './assets/narnia.png';
 import capaInstrumentos from './assets/instrumentos.png';
+import capaMortal from './assets/mortal.png';
+import capaPrimeira from './assets/primeira.png';
+import capaAquiles from './assets/aquiles.png';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
@@ -109,7 +112,7 @@ const questions: Question[] = [
     question: 'Qual artefato você escolheria?',
     subtitle: 'O objeto que carregaria em sua jornada final',
     options: [
-      { text: 'Uma espada lendária forjada sob estrelas divinas', icon: '🗡️️', subgenre: 'epic' },
+      { text: 'Uma espada lendária forjada sob estrelas divinas', icon: '🗡️', subgenre: 'epic' },
       { text: 'Um grimório de feitiços das trevas mais profundas', icon: '📓', subgenre: 'dark' },
       { text: 'Um amuleto que revela o invisível nas ruas da cidade', icon: '🔮', subgenre: 'urban' },
       { text: 'Uma bússola a vapor que aponta para reinos esquecidos', icon: '🧭', subgenre: 'steampunk' },
@@ -131,7 +134,7 @@ const questions: Question[] = [
     question: 'Qual o seu tipo de conflito favorito?',
     subtitle: 'A fagulha que acende a chama da narrativa',
     options: [
-      { text: 'Dilemas morais extremos onde ninguém sai totalmente ileso', icon: '⚖️️', subgenre: 'grimdark' },
+      { text: 'Dilemas morais extremos onde ninguém sai totalmente ileso', icon: '⚖️', subgenre: 'grimdark' },
       { text: 'Rivalidades mortais misturadas com paixões arrebatadoras', icon: '🔥', subgenre: 'romantasy' },
       { text: 'Confrontos diretos contra divindades e monstros mitológicos', icon: '🐉', subgenre: 'mythological' },
       { text: 'Invenções tecnológicas colidindo com forças arcanas', icon: '🔧', subgenre: 'steampunk' },
@@ -175,7 +178,7 @@ const questions: Question[] = [
     question: 'O que você mais teme encontrar?',
     subtitle: 'O abismo que olha de volta para você',
     options: [
-      { text: 'A traição daqueles em quem você jurou confiar cegamente', icon: '🗡️', subgenre: 'grimdark' },
+      { text: 'A traição daqueles em quem você jurou confiar cegamente', icon: '🗡️️', subgenre: 'grimdark' },
       { text: 'O esquecimento eterno e a perda de todas as memórias', icon: '⏳', subgenre: 'historical' },
       { text: 'A corrupção total da alma por forças que não pode controlar', icon: '👁️', subgenre: 'dark' },
       { text: 'Ficar preso para sempre em um mundo que não é o seu', icon: '🚪', subgenre: 'portal' },
@@ -291,7 +294,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Realista', 'Sombrio', 'Desafiador', 'Cruel'],
     bookSuggestion: 'A Primeira Lei — Joe Abercrombie',
     bookSynopsis: 'Um inquisidor sádico, um bárbaro atormentado e um nobre arrogante cruzam seus caminhos.',
-    bookCover: capaCoracao,
+    bookCover: capaPrimeira,
     authors: 'Joe Abercrombie · George R.R. Martin · Mark Lawrence',
   },
   mythological: {
@@ -302,7 +305,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Divino', 'Épico', 'Lendário', 'Ancestral'],
     bookSuggestion: 'A Canção de Aquiles — Madeline Miller',
     bookSynopsis: 'A jornada mítica e trágica de dois jovens príncipes unidos pelo destino e pela guerra.',
-    bookCover: capaTrono,
+    bookCover: capaAquiles,
     authors: 'Madeline Miller · Rick Riordan · Neil Gaiman',
   },
   steampunk: {
@@ -313,7 +316,7 @@ const subgenreResults: Record<Subgenre, SubgenreResult> = {
     traits: ['Inventivo', 'Mecânico', 'Vitoriano', 'Visionário'],
     bookSuggestion: 'As Máquinas Mortais — Philip Reeve',
     bookSynopsis: 'Cidades sobre rodas vagando por um mundo devastado em busca de recursos.',
-    bookCover: capaPriorado,
+    bookCover: capaMortal,
     authors: 'Philip Reeve · China Miéville · Jules Verne',
   },
 };
@@ -794,7 +797,7 @@ function DiagnosticSection({ participantName, subgenre, onNext }: { participantN
 function ResultSection({ participantName, subgenre, onRestart, isDevPreview = false }: { participantName: string; subgenre: Subgenre; onRestart: () => void; isDevPreview?: boolean }) {
   const info = subgenreResults[subgenre];
   const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(isDevPreview); // Se for preview dev, não precisa salvar duplicado
+  const [saved, setSaved] = useState(isDevPreview);
 
   useEffect(() => {
     if (!saved && !saving && !isDevPreview) {
