@@ -11,6 +11,9 @@ import capaMortal from './assets/mortal.png';
 import capaPrimeira from './assets/primeira.png';
 import capaAquiles from './assets/aquiles.png';
 
+// Import da trilha sonora da raiz do projeto
+import audioTrilha from '../enya.mp3';
+
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 
 type Screen = 'hero' | 'quiz' | 'diagnostic' | 'result' | 'dev-login' | 'dev-dashboard';
@@ -112,7 +115,7 @@ const questions: Question[] = [
     question: 'Qual artefato você escolheria?',
     subtitle: 'O objeto que carregaria em sua jornada final',
     options: [
-      { text: 'Uma espada lendária forjada sob estrelas divinas', icon: '🗡️', subgenre: 'epic' },
+      { text: 'Uma espada lendária forjada sob estrelas divinas', icon: '🗡', subgenre: 'epic' },
       { text: 'Um grimório de feitiços das trevas mais profundas', icon: '📓', subgenre: 'dark' },
       { text: 'Um amuleto que revela o invisível nas ruas da cidade', icon: '🔮', subgenre: 'urban' },
       { text: 'Uma bússola a vapor que aponta para reinos esquecidos', icon: '🧭', subgenre: 'steampunk' },
@@ -178,7 +181,7 @@ const questions: Question[] = [
     question: 'O que você mais teme encontrar?',
     subtitle: 'O abismo que olha de volta para você',
     options: [
-      { text: 'A traição daqueles em quem você jurou confiar cegamente', icon: '🗡️️', subgenre: 'grimdark' },
+      { text: 'A traição daqueles em quem você jurou confiar cegamente', icon: '🗡️', subgenre: 'grimdark' },
       { text: 'O esquecimento eterno e a perda de todas as memórias', icon: '⏳', subgenre: 'historical' },
       { text: 'A corrupção total da alma por forças que não pode controlar', icon: '👁️', subgenre: 'dark' },
       { text: 'Ficar preso para sempre em um mundo que não é o seu', icon: '🚪', subgenre: 'portal' },
@@ -870,6 +873,38 @@ export default function App() {
   const [participantName, setParticipantName] = useState('');
   const [userSubgenre, setUserSubgenre] = useState<Subgenre>('epic');
   const [isDevPreview, setIsDevPreview] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+
+  // Referência para o elemento de áudio contínuo
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Tenta tocar a música assim que o componente principal monta
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.4;
+      audioRef.current.play().catch(() => {
+        const handleFirstInteraction = () => {
+          audioRef.current?.play().catch(() => {});
+          window.removeEventListener('click', handleFirstInteraction);
+        };
+        window.addEventListener('click', handleFirstInteraction);
+      });
+    }
+  }, []);
+
+  const handleStartMusic = () => {
+    if (audioRef.current && audioRef.current.paused) {
+      audioRef.current.play().catch(() => {});
+    }
+    setScreen('quiz');
+  };
+
+  const toggleMute = () => {
+    if (audioRef.current) {
+      audioRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
 
   const handleQuizComplete = (subgenre: Subgenre, name: string) => {
     setUserSubgenre(subgenre);
@@ -887,7 +922,37 @@ export default function App() {
 
   return (
     <>
-      {screen === 'hero' && <HeroSection onStart={() => setScreen('quiz')} onDevAccess={() => setScreen('dev-login')} />}
+      {/* Elemento de Áudio Global (Loop Ativado) */}
+      <audio ref={audioRef} src={audioTrilha} loop preload="auto" />
+
+      {/* Botão flutuante discreto para Ligar/Desligar a Música em qualquer tela */}
+      <button
+        onClick={toggleMute}
+        title={isMuted ? "Ativar Trilha Sonora" : "Silenciar Trilha Sonora"}
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 9999,
+          background: 'rgba(35, 18, 24, 0.85)',
+          border: '1px solid #D4AF37',
+          color: '#D4AF37',
+          borderRadius: '50%',
+          width: '45px',
+          height: '45px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
+          fontSize: '1.2rem',
+          transition: 'transform 0.2s',
+        }}
+      >
+        {isMuted ? '🔇' : '🎵'}
+      </button>
+
+      {screen === 'hero' && <HeroSection onStart={handleStartMusic} onDevAccess={() => setScreen('dev-login')} />}
       {screen === 'dev-login' && <DevLoginSection onLoginSuccess={() => setScreen('dev-dashboard')} onBack={() => setScreen('hero')} />}
       {screen === 'dev-dashboard' && <DevDashboardSection onBack={() => setScreen('hero')} onSelectSubgenre={handleDevSelectSubgenre} />}
       {screen === 'quiz' && <QuizSection onComplete={handleQuizComplete} />}
